@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Journey</title>
+    <title>たびポートフォリオ — Portfolio Journey</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&family=Noto+Serif+JP:wght@300;400;600&display=swap');
 
@@ -523,15 +523,15 @@
     <canvas id="canvas"></canvas>
 
     <div id="title">
-        <div id="title-main">SKRT</div>
-        <div id="title-sub">PORTFOLIO · JOURNEY</div>
+        <div id="title-main">旅ポートフォリオ</div>
+        <div id="title-sub">TABI PORTFOLIO · JOURNEY</div>
     </div>
 
     <div id="controls-hint">
-        <b>W A S D</b> — drive<br>
-        <b>E</b> — explore<br>
-        <b>ESC</b> — close<br>
-        <b>T</b> — tour
+        <b>W A S D</b> — 走る · drive<br>
+        <b>E</b> — 探索する · explore<br>
+        <b>ESC</b> — 戻る · close<br>
+        <b>T</b> — ツアー · tour
     </div>
     <button id="tour-btn" onclick="toggleTour()" style="position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(20,32,40,0.82);border:1.5px solid rgba(201,74,26,0.5);color:#e87c3e;font-family:'Zen Kurenaido',sans-serif;font-size:11px;letter-spacing:2px;padding:7px 20px;cursor:pointer;border-radius:2px;transition:all 0.3s;">⛩ AUTO TOUR · 自動ツアー</button>
 
@@ -556,12 +556,12 @@
     </div>
 
     <div id="prompt">
-        <div id="prompt-key">[ E ] Enter</div>
+        <div id="prompt-key">[ E ] 探索する</div>
         <div id="prompt-name"></div>
     </div>
 
     <div id="panel">
-        <button id="panel-close" onclick="closePanel()">✕ Close</button>
+        <button id="panel-close" onclick="closePanel()">✕ 閉じる</button>
         <div class="panel-kanji" id="panel-tag">作品</div>
         <div class="panel-title" id="panel-title">Project Title</div>
         <div class="panel-subtitle" id="panel-subtitle">SUBTITLE</div>
@@ -572,8 +572,8 @@
         <div class="panel-divider"></div>
         <div class="panel-tech" id="panel-tech"></div>
         <div class="panel-links">
-            <a class="panel-link primary" id="panel-link1" href="#">Project Links</a>
-            <a class="panel-link secondary" id="panel-link2" href="#">Placeholder</a>
+            <a class="panel-link primary" id="panel-link1" href="#">作品を見る</a>
+            <a class="panel-link secondary" id="panel-link2" href="#">ソースコード</a>
         </div>
     </div>
 
@@ -718,6 +718,43 @@
         [-26, -26, 26, -26, 2.5], [-26, 26, 26, 26, 2.5], [-26, -26, -26, 26, 2.5], [26, -26, 26, 26, 2.5]
         ].forEach(a => makePath(...a));
 
+        // ─── COLLISION SYSTEM ────────────────────────────────────────────────────────
+        // Each collidable object registers a circle: { x, z, r }
+        // The car is also treated as a circle (radius CAR_R).
+        // Every frame we move the car, then push it out of any overlapping circle.
+        const colliders = [];
+        const CAR_R = 1.1; // approximate half-width of the kei car
+
+        function addCollider(x, z, r) {
+            colliders.push({ x, z, r });
+        }
+
+        // Resolve car position against all registered colliders.
+        // Called after position is updated; slides the car along the obstacle surface
+        // instead of stopping dead — this gives a smooth "bump and slide" feel.
+        function resolveCollisions() {
+            const cx = carGroup.position.x;
+            const cz = carGroup.position.z;
+            let nx = cx, nz = cz;
+
+            for (const c of colliders) {
+                const dx = nx - c.x, dz = nz - c.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+                const minDist = CAR_R + c.r;
+                if (dist < minDist && dist > 0.001) {
+                    // Push car out along the overlap axis
+                    const overlap = minDist - dist;
+                    nx += (dx / dist) * overlap;
+                    nz += (dz / dist) * overlap;
+                    // Bleed off speed on impact (proportional to how head-on the hit is)
+                    carSpeed *= 0.45;
+                }
+            }
+
+            carGroup.position.x = nx;
+            carGroup.position.z = nz;
+        }
+
         // ─── LOW-POLY TREES ───────────────────────────────────────────────────────────
         function makeTree(x, z, s = 1, season = 'green') {
             const g = new THREE.Group();
@@ -733,6 +770,8 @@
                 cone.position.y = y * s; cone.castShadow = true; g.add(cone);
             });
             g.position.set(x, 0, z); scene.add(g);
+            // Register trunk as a collider — radius scales with tree size
+            addCollider(x, z, 0.32 * s);
         }
 
         [[-45, -45], [-35, -50], [-55, -30], [-60, -10], [-55, 15], [-45, 40], [-30, 52], [-10, 58],
@@ -815,6 +854,9 @@
 
             scene.add(g);
             stations.push({ group: g, lantern, light, rope, proj });
+            // Register the two torii posts as colliders (world-space positions)
+            addCollider(proj.position.x - 1.5, proj.position.z, 0.28);
+            addCollider(proj.position.x + 1.5, proj.position.z, 0.28);
         });
 
         // ─── ABOUT ME MARKER (center) ────────────────────────────────────────────────
@@ -854,6 +896,8 @@
             g.add((() => { const _m = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.16, 0.16), gm); _m.position.set(0, 1.42, 0); return _m; })());
             const l = new THREE.PointLight(0xffe090, 0.7, 7); l.position.y = 1.42; g.add(l);
             g.position.set(x, 0, z); scene.add(g);
+            // Register lantern base as a collider
+            addCollider(x, z, 0.38);
         }
         [[-5, -5], [5, -5], [-5, 5], [5, 5], [-12, -12], [12, -12], [-12, 12], [12, 12], [-18, 0], [18, 0], [0, -20]].forEach(([x, z]) => makeStoneLantern(x, z));
 
@@ -883,7 +927,7 @@
 
 
 
-        // ─── KEI CAR ─────────────────────────────────────────────────────────────────
+        // ─── CAR ─────────────────────────────────────────────────────────────────
         const carGroup = new THREE.Group();
         scene.add(carGroup);
 
@@ -985,6 +1029,7 @@
             carGroup.rotation.y = carAngle;
             carGroup.position.x = Math.max(-88, Math.min(88, carGroup.position.x));
             carGroup.position.z = Math.max(-88, Math.min(88, carGroup.position.z));
+            resolveCollisions(); // push car out of any overlapping objects
             wheels.forEach(w => { w.rotation.x += carSpeed * 3; });
             document.getElementById('speed-val').textContent = String(Math.abs(Math.round(carSpeed * 280))).padStart(3, '0');
         }
@@ -1114,6 +1159,7 @@
                 carGroup.position.x += Math.sin(carAngle) * carSpeed;
                 carGroup.position.z += Math.cos(carAngle) * carSpeed;
                 carGroup.rotation.y = carAngle;
+                resolveCollisions();
                 wheels.forEach(w => { w.rotation.x += carSpeed * 3; });
                 document.getElementById('speed-val').textContent = String(Math.abs(Math.round(carSpeed * 280))).padStart(3, '0');
             } else if (tourPhase === 'wait') {
@@ -1147,11 +1193,11 @@
 
         // ─── LOADING ─────────────────────────────────────────────────────────────────
         const steps = [
-            [15, '里山を描いています... drawing countryside'],
-            [35, '桜を植えています... planting sakura'],
-            [55, '鳥居を建てています... building torii gates'],
-            [75, '軽自動車を準備中... preparing kei car'],
-            [100, '出発しましょう！ let\'s go!'],
+            [15, 'drawing countryside...'],
+            [35, 'planting trees...'],
+            [55, 'building gates...'],
+            [75, 'prepping car to skkrt skkrt...'],
+            [100, '出発 let\'s go!'],
         ];
         let si = 0;
         function loadStep() {
