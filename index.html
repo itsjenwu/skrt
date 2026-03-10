@@ -468,6 +468,212 @@
             letter-spacing: 3px;
         }
 
+        /* ── SKI MINIGAME UI ── */
+        #ski-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            display: none;
+        }
+
+            #ski-overlay.active {
+                display: block;
+            }
+
+        #ski-hud {
+            position: fixed;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 55;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+        }
+
+            #ski-hud.active {
+                display: flex;
+            }
+
+        #ski-score-label {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 11px;
+            color: #c8f0ff;
+            letter-spacing: 4px;
+            opacity: 0.8;
+        }
+
+        #ski-score {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 48px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(160,220,255,0.8);
+            line-height: 1;
+        }
+
+        #ski-lives {
+            font-size: 20px;
+            letter-spacing: 4px;
+        }
+
+        #ski-start-screen {
+            position: fixed;
+            inset: 0;
+            background: rgba(10,20,40,0.88);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+            backdrop-filter: blur(4px);
+        }
+
+            #ski-start-screen h2 {
+                font-family: 'Zen Kurenaido',sans-serif;
+                font-size: 42px;
+                color: #c8f0ff;
+                letter-spacing: 6px;
+                margin-bottom: 10px;
+                text-shadow: 0 0 30px rgba(160,220,255,0.6);
+            }
+
+            #ski-start-screen p {
+                font-size: 12px;
+                color: #a0c8e0;
+                letter-spacing: 3px;
+                margin-bottom: 8px;
+                opacity: 0.8;
+            }
+
+        #ski-start-btn {
+            margin-top: 28px;
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 14px;
+            letter-spacing: 3px;
+            padding: 14px 40px;
+            background: rgba(100,180,255,0.15);
+            border: 1.5px solid rgba(160,220,255,0.6);
+            color: #c8f0ff;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+            pointer-events: all;
+        }
+
+            #ski-start-btn:hover {
+                background: rgba(100,180,255,0.28);
+            }
+
+        #ski-end-screen {
+            position: fixed;
+            inset: 0;
+            background: rgba(10,20,40,0.92);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+            backdrop-filter: blur(4px);
+        }
+
+            #ski-end-screen.show {
+                display: flex;
+            }
+
+        #ski-end-title {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 52px;
+            letter-spacing: 6px;
+            margin-bottom: 12px;
+        }
+
+        #ski-end-score {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 22px;
+            color: #c8f0ff;
+            letter-spacing: 4px;
+            margin-bottom: 6px;
+        }
+
+        #ski-end-best {
+            font-size: 11px;
+            color: #a0c8e0;
+            letter-spacing: 3px;
+            margin-bottom: 32px;
+            opacity: 0.7;
+        }
+
+        #ski-end-btns {
+            display: flex;
+            gap: 14px;
+        }
+
+        .ski-btn {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            padding: 11px 28px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            pointer-events: all;
+        }
+
+        #ski-retry-btn {
+            background: rgba(100,180,255,0.18);
+            border: 1.5px solid rgba(160,220,255,0.6);
+            color: #c8f0ff;
+        }
+
+            #ski-retry-btn:hover {
+                background: rgba(100,180,255,0.32);
+            }
+
+        #ski-exit-btn {
+            background: transparent;
+            border: 1px solid rgba(201,74,26,0.5);
+            color: #e87c3e;
+        }
+
+            #ski-exit-btn:hover {
+                background: rgba(201,74,26,0.1);
+            }
+
+        /* Mobile ski arrows */
+        #ski-mobile-btns {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            gap: 24px;
+            z-index: 56;
+            pointer-events: all;
+        }
+
+            #ski-mobile-btns.active {
+                display: flex;
+            }
+
+        .ski-arrow {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(200,240,255,0.18);
+            border: 1.5px solid rgba(160,220,255,0.5);
+            color: #c8f0ff;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
         /* ── RESPONSIVE ── */
         @media(max-width:600px) {
             #panel {
@@ -518,6 +724,27 @@
         <div id="loading-title">TABI PORTFOLIO</div>
         <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
         <div id="loading-status">里山を描いています...</div>
+    </div>
+
+    <div id="ski-hud">
+        <div id="ski-score-label">スコア · SCORE</div>
+        <div id="ski-score">0</div>
+        <div id="ski-lives">⛷️⛷️⛷️</div>
+    </div>
+
+    <div id="ski-end-screen">
+        <div id="ski-end-title">🏔️</div>
+        <div id="ski-end-score">SCORE: 0</div>
+        <div id="ski-end-best">BEST: 0</div>
+        <div id="ski-end-btns">
+            <button class="ski-btn" id="ski-retry-btn" onclick="skiRetry()">↺ もう一度 · RETRY</button>
+            <button class="ski-btn" id="ski-exit-btn" onclick="skiExit()">← 戻る · EXIT</button>
+        </div>
+    </div>
+
+    <div id="ski-mobile-btns">
+        <div class="ski-arrow" id="ski-left-btn">◀</div>
+        <div class="ski-arrow" id="ski-right-btn">▶</div>
     </div>
 
     <canvas id="canvas"></canvas>
@@ -897,7 +1124,7 @@
             const l = new THREE.PointLight(0xffe090, 0.7, 7); l.position.y = 1.42; g.add(l);
             g.position.set(x, 0, z); scene.add(g);
             // Register lantern base as a collider
-            addCollider(x, z, 0.38);
+            addCollider(x, z, 0.9);
         }
         [[-5, -5], [5, -5], [-5, 5], [5, 5], [-12, -12], [12, -12], [-12, 12], [12, 12], [-18, 0], [18, 0], [0, -20]].forEach(([x, z]) => makeStoneLantern(x, z));
 
@@ -927,7 +1154,7 @@
 
 
 
-        // ─── CAR ─────────────────────────────────────────────────────────────────
+        // ─── KEI CAR ─────────────────────────────────────────────────────────────────
         const carGroup = new THREE.Group();
         scene.add(carGroup);
 
@@ -1006,7 +1233,7 @@
         // ─── CAR PHYSICS ─────────────────────────────────────────────────────────────
         const keys = {};
         let carSpeed = 0, carAngle = 0;
-        const MAX_SPEED = 1.95, ACCEL = 0.25, FRICTION = 0.7, TURN = 0.042;
+        const MAX_SPEED = 0.65, ACCEL = 0.022, FRICTION = 0.91, TURN = 0.042;
         document.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
         document.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
 
@@ -1047,20 +1274,42 @@
         // ─── PROXIMITY + PANEL ───────────────────────────────────────────────────────
         let nearStation = null, panelOpen = false;
         function checkProximity() {
+            if (SKI.active) return;
+            // Reset prompt first
+            const pr = document.getElementById('prompt'), pn = document.getElementById('prompt-name'), eb = document.getElementById('enter-btn');
+            document.getElementById('prompt-key').textContent = '[ E ] 探索する';
             let closest = null, minD = 9;
             stations.forEach(s => {
                 const dx = carGroup.position.x - s.group.position.x, dz = carGroup.position.z - s.group.position.z;
                 const d = Math.sqrt(dx * dx + dz * dz); if (d < minD) { minD = d; closest = s; }
             });
-            const pr = document.getElementById('prompt'), pn = document.getElementById('prompt-name'), eb = document.getElementById('enter-btn');
+            // Check ski gate
+            const sgdx = carGroup.position.x - SKI_GATE_X, sgdz = carGroup.position.z - SKI_GATE_Z;
+            const sgd = Math.sqrt(sgdx * sgdx + sgdz * sgdz);
+            if (sgd < 5 && !panelOpen) {
+                nearStation = { proj: null, isSki: true };
+                pr.classList.add('visible');
+                pn.textContent = '⛷ SKI GATE · スキー場';
+                document.getElementById('prompt-key').textContent = '[ E ] 入る · ENTER';
+                eb.classList.add('visible');
+                return;
+            }
             if (closest && !panelOpen) { nearStation = closest; pr.classList.add('visible'); pn.textContent = closest.proj.name; eb.classList.add('visible'); }
             else { nearStation = null; pr.classList.remove('visible'); eb.classList.remove('visible'); }
         }
         document.addEventListener('keydown', e => {
-            if (e.key.toLowerCase() === 'e' && nearStation && !panelOpen) openPanel(nearStation.proj);
-            if (e.key === 'Escape') closePanel();
+            if (e.key.toLowerCase() === 'e' && nearStation && !panelOpen) {
+                if (nearStation.isSki) enterSki();
+                else openPanel(nearStation.proj);
+            }
+            if (e.key === 'Escape') { closePanel(); if (SKI.active) skiExit(); }
         });
-        function mobileEnter() { if (nearStation && !panelOpen) openPanel(nearStation.proj); }
+        function mobileEnter() {
+            if (nearStation && !panelOpen) {
+                if (nearStation.isSki) enterSki();
+                else openPanel(nearStation.proj);
+            }
+        }
         window.mobileEnter = mobileEnter;
         function openPanel(proj) {
             panelOpen = true;
@@ -1169,10 +1418,371 @@
             }
         }
 
-        // ─── ANIMATE ─────────────────────────────────────────────────────────────────
+        // ─── SKI GATE (world object) ──────────────────────────────────────────────────
+        const SKI_GATE_X = 52, SKI_GATE_Z = -52; // near the top-right mountain corner
+        (function buildSkiGate() {
+            const g = new THREE.Group();
+            // Two tall red-white poles
+            const poleMat = new THREE.MeshLambertMaterial({ color: 0xdd2222 });
+            const whiteMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+            [-2.2, 2.2].forEach(x => {
+                for (let seg = 0; seg < 5; seg++) {
+                    const m = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.12, 0.12, 0.7, 6),
+                        seg % 2 === 0 ? poleMat : whiteMat
+                    );
+                    m.position.set(x, 0.35 + seg * 0.7, 0);
+                    g.add(m);
+                }
+                // Flag at top
+                const flag = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.4, 0.06), poleMat);
+                flag.position.set(x + (x > 0 ? 0.35 : -0.35), 3.8, 0);
+                g.add(flag);
+            });
+            // Banner across the top
+            const banner = new THREE.Mesh(
+                new THREE.BoxGeometry(4.6, 0.28, 0.08),
+                new THREE.MeshLambertMaterial({ color: 0x1155cc })
+            );
+            banner.position.set(0, 3.5, 0); g.add(banner);
+            // Glow light
+            const gl = new THREE.PointLight(0x44aaff, 2.5, 14);
+            gl.position.set(0, 3.5, 0); g.add(gl);
+            // Sparkling snow particles around the gate
+            const snowGeo = new THREE.BufferGeometry();
+            const sv = [];
+            for (let i = 0; i < 60; i++) sv.push((Math.random() - 0.5) * 6, (Math.random()) * 4, (Math.random() - 0.5) * 3);
+            snowGeo.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3));
+            g.add(new THREE.Points(snowGeo, new THREE.PointsMaterial({ color: 0xeef8ff, size: 0.12, transparent: true, opacity: 0.7 })));
+
+            g.position.set(SKI_GATE_X, 0, SKI_GATE_Z);
+            scene.add(g);
+        })();
+
+        // ─── SKI MINIGAME ─────────────────────────────────────────────────────────────
+        const SKI = {
+            active: false,
+            started: false,
+            lives: 3,
+            score: 0,
+            best: 0,
+            skiX: 0,          // player lane position (-1 to 1 normalised)
+            skiSpeed: 0,       // downhill scroll speed
+            skiTime: 0,
+            invincible: 0,     // frames of invincibility after a hit
+            leftHeld: false,
+            rightHeld: false,
+
+            // Obstacle pool — each: { x, z, type, mesh }
+            obstacles: [],
+            // Scenery (trees/moguls scrolling past)
+            scenery: [],
+            // Three.js objects for the ski scene
+            skiScene: null,
+            skiCamera: null,
+            skiRenderer: null, // reuses main renderer
+            playerMesh: null,
+            slopeMesh: null,
+            finishZ: -280,     // how far until you reach the bottom
+            savedCarPos: null,
+            savedCarAngle: 0,
+        };
+
+        // ── Build ski scene objects ──────────────────────────────────────────────────
+        function buildSkiScene() {
+            SKI.skiScene = new THREE.Scene();
+            SKI.skiScene.background = new THREE.Color(0x9ac8e8);
+            SKI.skiScene.fog = new THREE.FogExp2(0xb8daf0, 0.022);
+
+            // Camera — angled top-down following the player
+            SKI.skiCamera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
+            SKI.skiCamera.position.set(0, 14, 12);
+            SKI.skiCamera.lookAt(0, 0, -6);
+
+            // Lighting
+            const sun2 = new THREE.DirectionalLight(0xfff8f0, 1.4);
+            sun2.position.set(10, 20, 10); SKI.skiScene.add(sun2);
+            SKI.skiScene.add(new THREE.HemisphereLight(0x9ac8e8, 0xd8eef8, 0.7));
+
+            // Infinite snow slope — two long panels we'll leapfrog to simulate scrolling
+            const slopeMat = new THREE.MeshLambertMaterial({ color: 0xe8f4ff });
+            SKI.slopePanels = [];
+            for (let i = 0; i < 3; i++) {
+                const m = new THREE.Mesh(new THREE.PlaneGeometry(24, 80), slopeMat);
+                m.rotation.x = -Math.PI / 2;
+                m.position.set(0, -0.01, -40 * i);
+                SKI.skiScene.add(m);
+                SKI.slopePanels.push(m);
+            }
+            // Slope edge trees (fixed decoration)
+            const treeMat = new THREE.MeshLambertMaterial({ color: 0x3a7a4a });
+            const trunkMat = new THREE.MeshLambertMaterial({ color: 0x5a3a1a });
+            for (let i = 0; i < 20; i++) {
+                [-12, 12].forEach(sx => {
+                    const tg = new THREE.Group();
+                    tg.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.15, 1.2, 5), trunkMat), { position: new THREE.Vector3(0, 0.6, 0) }));
+                    tg.add(Object.assign(new THREE.Mesh(new THREE.ConeGeometry(1.0, 2.0, 6), treeMat), { position: new THREE.Vector3(0, 2.2, 0) }));
+                    tg.position.set(sx + (Math.random() - 0.5) * 3, 0, -i * 14 - Math.random() * 6);
+                    SKI.skiScene.add(tg);
+                });
+            }
+            // Slope edge lines (ski run markers)
+            const lineMat = new THREE.MeshLambertMaterial({ color: 0xff4422 });
+            [-9, 9].forEach(x => {
+                const lm = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.05, 300), lineMat);
+                lm.position.set(x, 0.02, -150); SKI.skiScene.add(lm);
+            });
+
+            // Player car mesh (simplified kei car shape for ski mode)
+            const pg = new THREE.Group();
+            pg.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 2.0), new THREE.MeshLambertMaterial({ color: 0xe8c0a0 })), { position: new THREE.Vector3(0, 0.2, 0) }));
+            pg.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.35, 1.0), new THREE.MeshLambertMaterial({ color: 0xfbf0dc })), { position: new THREE.Vector3(0, 0.56, -0.1) }));
+            // Skis
+            [-0.5, 0.5].forEach(sx => {
+                const ski = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.06, 2.4), new THREE.MeshLambertMaterial({ color: 0x1155cc }));
+                ski.position.set(sx, -0.05, 0); pg.add(ski);
+            });
+            pg.position.set(0, 0.06, 0);
+            SKI.skiScene.add(pg);
+            SKI.playerMesh = pg;
+
+            // Obstacle pool — pre-create 24 obstacle meshes
+            SKI.obstacles = [];
+            const obsMats = [
+                new THREE.MeshLambertMaterial({ color: 0x888090 }), // rock
+                new THREE.MeshLambertMaterial({ color: 0x3a6a3a }), // tree stump
+                new THREE.MeshLambertMaterial({ color: 0xd0e8ff }), // snowdrift
+            ];
+            const obsGeos = [
+                new THREE.DodecahedronGeometry(0.65, 0),
+                new THREE.CylinderGeometry(0.4, 0.55, 1.0, 6),
+                new THREE.SphereGeometry(0.7, 6, 4),
+            ];
+            for (let i = 0; i < 24; i++) {
+                const t = i % 3;
+                const m = new THREE.Mesh(obsGeos[t], obsMats[t]);
+                m.visible = false;
+                SKI.skiScene.add(m);
+                SKI.obstacles.push({ mesh: m, active: false, x: 0, z: 0, r: 0.7 });
+            }
+            // Score particles (flash on near-miss)
+            SKI.flashLight = new THREE.PointLight(0x00ffaa, 0, 8);
+            SKI.flashLight.position.set(0, 3, 0);
+            SKI.skiScene.add(SKI.flashLight);
+        }
+
+        // ── Spawn an obstacle ────────────────────────────────────────────────────────
+        function spawnObstacle() {
+            const obs = SKI.obstacles.find(o => !o.active);
+            if (!obs) return;
+            obs.active = true;
+            obs.x = (Math.random() - 0.5) * 14;
+            obs.z = SKI.playerMesh.position.z - 50 - Math.random() * 20;
+            obs.mesh.position.set(obs.x, 0.4, obs.z);
+            obs.mesh.visible = true;
+            obs.mesh.rotation.y = Math.random() * Math.PI * 2;
+        }
+
+        // ── Enter ski minigame ───────────────────────────────────────────────────────
+        function enterSki() {
+            if (SKI.active) return;
+            SKI.active = true;
+            SKI.started = false;
+            // Save world state
+            SKI.savedCarPos = carGroup.position.clone();
+            SKI.savedCarAngle = carAngle;
+            // Hide world HUD
+            ['title', 'controls-hint', 'minimap', 'speedometer', 'prompt', 'tour-btn'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.style.display = 'none';
+            });
+            closePanel();
+            if (tourActive) toggleTour();
+            // Build ski scene if first time
+            if (!SKI.skiScene) buildSkiScene();
+            // Reset state
+            SKI.lives = 3; SKI.score = 0; SKI.skiTime = 0;
+            SKI.skiSpeed = 0.18; SKI.skiX = 0; SKI.invincible = 0;
+            SKI.playerMesh.position.set(0, 0.06, 0);
+            SKI.obstacles.forEach(o => { o.active = false; o.mesh.visible = false; });
+            updateSkiHUD();
+            // Show start screen
+            document.getElementById('ski-hud').classList.add('active');
+            // Build and show start screen dynamically
+            let ss = document.getElementById('ski-start-screen');
+            if (!ss) {
+                ss = document.createElement('div');
+                ss.id = 'ski-start-screen';
+                ss.innerHTML = `
+          <h2>⛷ スキー · SKI RUN</h2>
+          <p>← → or A D — steer left / right</p>
+          <p>Dodge rocks, stumps and snowdrifts</p>
+          <p>You have 3 lives · 3ライフ</p>
+          <button id="ski-start-btn" onclick="skiBegin()">▶ スタート · START</button>`;
+                document.body.appendChild(ss);
+            }
+            ss.style.display = 'flex';
+            ss.style.flexDirection = 'column';
+            ss.style.alignItems = 'center';
+            ss.style.justifyContent = 'center';
+            // Mobile buttons
+            if (isTouchDevice()) {
+                const mb = document.getElementById('ski-mobile-btns');
+                mb.classList.add('active');
+                document.getElementById('ski-left-btn').ontouchstart = () => { SKI.leftHeld = true; };
+                document.getElementById('ski-left-btn').ontouchend = () => { SKI.leftHeld = false; };
+                document.getElementById('ski-right-btn').ontouchstart = () => { SKI.rightHeld = true; };
+                document.getElementById('ski-right-btn').ontouchend = () => { SKI.rightHeld = false; };
+            }
+        }
+        window.enterSki = enterSki;
+
+        function skiBegin() {
+            const ss = document.getElementById('ski-start-screen');
+            if (ss) ss.style.display = 'none';
+            SKI.started = true;
+            // Seed initial obstacles
+            for (let i = 0; i < 8; i++) spawnObstacle();
+        }
+        window.skiBegin = skiBegin;
+
+        function updateSkiHUD() {
+            document.getElementById('ski-score').textContent = Math.floor(SKI.score);
+            const livesEl = document.getElementById('ski-lives');
+            livesEl.textContent = '⛷️'.repeat(Math.max(0, SKI.lives)) + '💀'.repeat(Math.max(0, 3 - SKI.lives));
+        }
+
+        function skiRetry() {
+            document.getElementById('ski-end-screen').classList.remove('show');
+            SKI.lives = 3; SKI.score = 0; SKI.skiTime = 0; SKI.skiSpeed = 0.18; SKI.skiX = 0; SKI.invincible = 0;
+            SKI.playerMesh.position.set(0, 0.06, 0);
+            SKI.obstacles.forEach(o => { o.active = false; o.mesh.visible = false; });
+            for (let i = 0; i < 8; i++) spawnObstacle();
+            SKI.started = true;
+            updateSkiHUD();
+        }
+        window.skiRetry = skiRetry;
+
+        function skiExit() {
+            SKI.active = false; SKI.started = false;
+            document.getElementById('ski-end-screen').classList.remove('show');
+            document.getElementById('ski-hud').classList.remove('active');
+            document.getElementById('ski-mobile-btns').classList.remove('active');
+            // Restore world HUD
+            ['title', 'minimap', 'speedometer', 'tour-btn'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.style.display = '';
+            });
+            document.getElementById('controls-hint').style.display = '';
+            // Restore car
+            if (SKI.savedCarPos) { carGroup.position.copy(SKI.savedCarPos); carAngle = SKI.savedCarAngle; carGroup.rotation.y = carAngle; }
+            carSpeed = 0;
+        }
+        window.skiExit = skiExit;
+
+        // ── Ski update (called each frame when active) ────────────────────────────────
+        function updateSki() {
+            if (!SKI.active || !SKI.started) return;
+            SKI.skiTime++;
+
+            // Ramp up speed over time (caps at a thrilling 1.1)
+            SKI.skiSpeed = Math.min(1.1, 0.18 + SKI.skiTime * 0.00018);
+            SKI.score += SKI.skiSpeed * 0.9;
+
+            // Steer input (keyboard OR mobile buttons)
+            const lft = keys['a'] || keys['arrowleft'] || SKI.leftHeld;
+            const rgt = keys['d'] || keys['arrowright'] || SKI.rightHeld;
+            const steerAmt = 0.055 + SKI.skiSpeed * 0.018;
+            if (lft) SKI.skiX = Math.max(-8.5, SKI.skiX - steerAmt);
+            if (rgt) SKI.skiX = Math.min(8.5, SKI.skiX + steerAmt);
+            // Natural gravity drift back to center (slight)
+            SKI.skiX *= 0.985;
+
+            // Move player mesh forward (we scroll everything toward camera)
+            SKI.playerMesh.position.x = SKI.skiX;
+            // Lean mesh based on turning
+            SKI.playerMesh.rotation.z = (lft ? 0.18 : rgt ? -0.18 : 0);
+            SKI.playerMesh.rotation.y = (lft ? 0.15 : rgt ? -0.15 : 0);
+
+            // Scroll slope panels
+            SKI.slopePanels.forEach(p => {
+                p.position.z += SKI.skiSpeed;
+                if (p.position.z > 50) p.position.z -= 240;
+            });
+
+            // Scroll and recycle obstacles
+            let spawnChance = 0.04 + SKI.skiTime * 0.00004;
+            SKI.obstacles.forEach(o => {
+                if (!o.active) return;
+                o.z += SKI.skiSpeed;
+                o.mesh.position.z = o.z;
+                // Recycle if gone past camera
+                if (o.z > 8) { o.active = false; o.mesh.visible = false; }
+                // Collision check
+                if (SKI.invincible <= 0) {
+                    const dx = SKI.playerMesh.position.x - o.x;
+                    const dz = SKI.playerMesh.position.z - o.z;
+                    const dist = Math.sqrt(dx * dx + dz * dz);
+                    if (dist < 1.1) {
+                        SKI.lives--;
+                        SKI.invincible = 90; // ~1.5s grace
+                        SKI.flashLight.color.set(0xff2200);
+                        SKI.flashLight.intensity = 6;
+                        updateSkiHUD();
+                        if (SKI.lives <= 0) { skiGameOver(); return; }
+                    }
+                }
+                // Near-miss bonus — within 1.9 but not hit
+                if (SKI.invincible <= 0) {
+                    const dx2 = SKI.playerMesh.position.x - o.x, dz2 = SKI.playerMesh.position.z - o.z;
+                    if (Math.sqrt(dx2 * dx2 + dz2 * dz2) < 1.9) { SKI.score += 2; SKI.flashLight.color.set(0x00ffaa); SKI.flashLight.intensity = 3; }
+                }
+            });
+
+            // Spawn new obstacles
+            if (Math.random() < spawnChance) spawnObstacle();
+
+            // Decay flash light
+            SKI.flashLight.intensity *= 0.88;
+            if (SKI.invincible > 0) { SKI.invincible--; SKI.playerMesh.visible = (Math.floor(SKI.invincible / 5) % 2 === 0); }
+            else SKI.playerMesh.visible = true;
+
+            // Camera follows player x with slight lag
+            SKI.skiCamera.position.x += (SKI.skiX * 0.3 - SKI.skiCamera.position.x) * 0.08;
+
+            // Update HUD every 6 frames
+            if (SKI.skiTime % 6 === 0) updateSkiHUD();
+        }
+
+        function skiGameOver() {
+            SKI.started = false;
+            if (SKI.score > SKI.best) SKI.best = SKI.score;
+            const wipeouts = ['ぼた雪！ WIPEOUT!', '転倒！ CRASH!', 'やばい！ OH NO!'];
+            document.getElementById('ski-end-title').textContent = wipeouts[Math.floor(Math.random() * wipeouts.length)];
+            document.getElementById('ski-end-title').style.color = '#ff6644';
+            document.getElementById('ski-end-score').textContent = 'SCORE: ' + Math.floor(SKI.score);
+            document.getElementById('ski-end-best').textContent = 'BEST: ' + Math.floor(SKI.best);
+            document.getElementById('ski-end-screen').classList.add('show');
+        }
+
+        // ── Gate proximity check (integrated into checkProximity) ────────────────────
+        function checkSkiGate() {
+            const dx = carGroup.position.x - SKI_GATE_X, dz = carGroup.position.z - SKI_GATE_Z;
+            const d = Math.sqrt(dx * dx + dz * dz);
+            if (d < 5 && !SKI.active && !panelOpen) {
+                const pr = document.getElementById('prompt'), pn = document.getElementById('prompt-name');
+                pr.classList.add('visible');
+                pn.textContent = '⛷ SKI GATE · スキー場';
+                document.getElementById('prompt-key').textContent = '[ E ] 入る · ENTER';
+                nearStation = { proj: null, isSki: true };
+            }
+        }
         let t = 0;
         function animate() {
             requestAnimationFrame(animate); t += 0.016;
+            if (SKI.active) {
+                updateSki();
+                if (SKI.skiScene) renderer.render(SKI.skiScene, SKI.skiCamera);
+                return;
+            }
             if (tourActive) updateTour(); else updateCar(); updateCamera(); checkProximity(); updateDayNight();
             stations.forEach((s, i) => {
                 const fo = i * 1.3;
@@ -1193,11 +1803,11 @@
 
         // ─── LOADING ─────────────────────────────────────────────────────────────────
         const steps = [
-            [15, 'drawing countryside...'],
-            [35, 'planting trees...'],
-            [55, 'building gates...'],
-            [75, 'prepping car to skkrt skkrt...'],
-            [100, '出発 let\'s go!'],
+            [15, '里山を描いています... drawing countryside'],
+            [35, '桜を植えています... planting sakura'],
+            [55, '鳥居を建てています... building torii gates'],
+            [75, '軽自動車を準備中... preparing kei car'],
+            [100, '出発しましょう！ let\'s go!'],
         ];
         let si = 0;
         function loadStep() {
