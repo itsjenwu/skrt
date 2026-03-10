@@ -1,610 +1,1171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>たびポートフォリオ — Portfolio Journey</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&family=Noto+Serif+JP:wght@300;400;600&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Journey</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&family=Noto+Serif+JP:wght@300;400;600&display=swap');
 
-  :root {
-    --blush:   #f2a7b0;
-    --peach:   #f7cba8;
-    --sky:     #7a9db8;
-    --sage:    #7aab88;
-    --moss:    #4e7a5a;
-    --earth:   #c9a97a;
-    --cream:   #e8ddc8;
-    --ink:     #2e2318;
-    --lantern: #e87c3e;
-    --sakura:  #f4b8c8;
-    --torii:   #c94a1a;
-  }
+        :root {
+            --blush: #f2a7b0;
+            --peach: #f7cba8;
+            --sky: #7a9db8;
+            --sage: #7aab88;
+            --moss: #4e7a5a;
+            --earth: #c9a97a;
+            --cream: #e8ddc8;
+            --ink: #2e2318;
+            --lantern: #e87c3e;
+            --sakura: #f4b8c8;
+            --torii: #c94a1a;
+        }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  body { background: #4a6878; overflow: hidden; font-family: 'Noto Serif JP', serif; color: var(--ink); }
-  #canvas { display: block; }
+        body {
+            background: #4a6878;
+            overflow: hidden;
+            font-family: 'Noto Serif JP', serif;
+            color: var(--ink);
+        }
 
-  /* ── TITLE ── */
-  #title { position: fixed; top: 22px; left: 28px; z-index: 10; pointer-events: none; }
-  #title-main { font-family: 'Zen Kurenaido', sans-serif; font-size: 26px; color: #e8ddc8; opacity: 0.9; letter-spacing: 2px; text-shadow: 1px 2px 0 rgba(255,255,255,0.5); }
-  #title-sub  { font-size: 10px; color: #c8b89a; opacity: 0.6; letter-spacing: 4px; margin-top: 2px; }
+        #canvas {
+            display: block;
+        }
 
-  /* ── CONTROLS HINT ── */
-  #controls-hint { position: fixed; bottom: 28px; left: 28px; font-size: 11px; color: #c8b89a; opacity: 0.65; line-height: 2; letter-spacing: 1px; pointer-events: none; z-index: 10; }
-  #controls-hint b { color: var(--torii); opacity: 1; }
+        /* ── TITLE ── */
+        #title {
+            position: fixed;
+            top: 22px;
+            left: 28px;
+            z-index: 10;
+            pointer-events: none;
+        }
 
-  /* ── SPEEDOMETER ── */
-  #speedometer { position: fixed; bottom: 28px; right: 28px; text-align: right; pointer-events: none; z-index: 10; }
-  #speed-val   { font-family: 'Zen Kurenaido', sans-serif; font-size: 42px; color: #e87c3e; opacity: 0.7; line-height: 1; }
-  #speed-label { font-size: 9px; color: #c8b89a; opacity: 0.5; letter-spacing: 3px; }
+        #title-main {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 26px;
+            color: #e8ddc8;
+            opacity: 0.9;
+            letter-spacing: 2px;
+            text-shadow: 1px 2px 0 rgba(255,255,255,0.5);
+        }
 
-  /* ── MINIMAP ── */
-  #minimap { position: fixed; top: 22px; right: 28px; width: 120px; height: 120px; border-radius: 4px; border: 1px solid rgba(46,35,24,0.15); background: rgba(20,32,40,0.82); box-shadow: 0 2px 12px rgba(46,35,24,0.1); overflow: hidden; z-index: 10; }
-  #minimap canvas { width: 100%; height: 100%; }
-  #minimap-label { position: absolute; bottom: 5px; left: 0; right: 0; text-align: center; font-size: 7px; letter-spacing: 2px; color: var(--ink); opacity: 0.4; }
+        #title-sub {
+            font-size: 10px;
+            color: #c8b89a;
+            opacity: 0.6;
+            letter-spacing: 4px;
+            margin-top: 2px;
+        }
 
-  /* ── PROMPT ── */
-  #prompt { position: fixed; top: 50%; left: 50%; transform: translate(-50%, calc(-50% + 60px)); text-align: center; pointer-events: none; opacity: 0; transition: opacity 0.4s; z-index: 10; }
-  #prompt.visible { opacity: 1; }
-  #prompt-key { display: inline-block; background: rgba(20,32,40,0.88); border: 1.5px solid #e87c3e; color: #e87c3e; font-family: 'Zen Kurenaido', sans-serif; font-size: 13px; padding: 8px 20px; letter-spacing: 2px; border-radius: 2px; box-shadow: 0 2px 16px rgba(201,74,26,0.2); animation: gentle-pulse 2s infinite; }
-  #prompt-name { margin-top: 8px; font-size: 10px; color: var(--ink); opacity: 0.55; letter-spacing: 3px; }
-  @keyframes gentle-pulse { 0%,100% { box-shadow: 0 2px 16px rgba(201,74,26,0.2); } 50% { box-shadow: 0 2px 28px rgba(201,74,26,0.45); } }
+        /* ── CONTROLS HINT ── */
+        #controls-hint {
+            position: fixed;
+            bottom: 28px;
+            left: 28px;
+            font-size: 11px;
+            color: #c8b89a;
+            opacity: 0.65;
+            line-height: 2;
+            letter-spacing: 1px;
+            pointer-events: none;
+            z-index: 10;
+        }
 
-  /* ── PANEL ── */
-  #panel { position: fixed; top: 0; right: -520px; width: 460px; height: 100vh; background: rgba(28,38,46,0.96); border-left: 2px solid rgba(201,74,26,0.35); padding: 52px 38px 40px; z-index: 20; transition: right 0.55s cubic-bezier(0.16,1,0.3,1); overflow-y: auto; pointer-events: none; }
-  #panel.open { right: 0; pointer-events: all; }
-  #panel::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background: linear-gradient(180deg, var(--torii), var(--blush), var(--torii)); }
-  #panel-close { position:absolute; top:18px; right:22px; background:none; border:1px solid rgba(232,124,62,0.5); color:#e87c3e; font-family:'Zen Kurenaido',sans-serif; font-size:12px; letter-spacing:1px; padding:5px 14px; cursor:pointer; border-radius:2px; transition:all 0.2s; }
-  #panel-close:hover { background:rgba(201,74,26,0.08); }
-  .panel-kanji   { font-size:11px; color:#e87c3e; letter-spacing:4px; opacity:0.8; margin-bottom:10px; }
-  .panel-title   { font-family:'Zen Kurenaido',sans-serif; font-size:28px; color:#e8ddc8; line-height:1.25; margin-bottom:6px; }
-  .panel-subtitle{ font-size:10px; color:#c8b89a; opacity:0.7; letter-spacing:3px; margin-bottom:22px; }
-  .panel-desc    { font-size:13px; color:#c8b8a0; opacity:0.9; line-height:2; margin-bottom:28px; }
-  .panel-divider { height:1px; background:linear-gradient(90deg,rgba(201,74,26,0.25),transparent); margin:22px 0; }
-  .panel-tech    { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px; }
-  .tech-tag      { font-size:10px; letter-spacing:1px; border:1px solid rgba(78,122,90,0.4); color:var(--moss); padding:4px 12px; border-radius:2px; background:rgba(122,171,136,0.08); }
-  .panel-links   { display:flex; gap:12px; flex-wrap:wrap; }
-  .panel-link    { font-family:'Zen Kurenaido',sans-serif; font-size:12px; letter-spacing:2px; padding:11px 22px; text-decoration:none; border-radius:2px; transition:all 0.2s; cursor:pointer; border:none; }
-  .panel-link.primary   { background:var(--torii); color:var(--cream); box-shadow:0 3px 14px rgba(201,74,26,0.3); }
-  .panel-link.primary:hover { box-shadow:0 4px 22px rgba(201,74,26,0.45); }
-  .panel-link.secondary { border:1px solid rgba(78,122,90,0.5); color:var(--moss); background:transparent; }
-  .panel-link.secondary:hover { background:rgba(122,171,136,0.1); }
+            #controls-hint b {
+                color: var(--torii);
+                opacity: 1;
+            }
 
-  /* ── JOYSTICK ── */
-  #joystick-zone  { position:fixed; bottom:32px; left:32px; width:130px; height:130px; z-index:30; display:none; touch-action:none; }
-  #joystick-base  { position:absolute; inset:0; border-radius:50%; background:rgba(254,246,236,0.3); border:1.5px solid rgba(201,74,26,0.3); box-shadow:0 2px 16px rgba(201,74,26,0.1); }
-  #joystick-stick { position:absolute; width:52px; height:52px; border-radius:50%; background:radial-gradient(circle at 35% 35%,rgba(242,167,176,0.7),rgba(201,74,26,0.35)); border:1.5px solid rgba(201,74,26,0.6); box-shadow:0 2px 12px rgba(201,74,26,0.3); top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; }
+        /* ── SPEEDOMETER ── */
+        #speedometer {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            text-align: right;
+            pointer-events: none;
+            z-index: 10;
+        }
 
-  /* ── ENTER BTN ── */
-  #enter-btn { position:fixed; bottom:32px; right:32px; width:78px; height:78px; border-radius:50%; background:rgba(254,246,236,0.8); border:1.5px solid rgba(201,74,26,0.5); color:var(--torii); font-family:'Zen Kurenaido',sans-serif; font-size:10px; letter-spacing:1px; display:none; align-items:center; justify-content:center; flex-direction:column; gap:3px; z-index:30; cursor:pointer; animation:gentle-pulse 2s infinite; touch-action:manipulation; opacity:0; transition:opacity 0.3s; pointer-events:none; }
-  #enter-btn.visible { opacity:1; pointer-events:all; }
-  #enter-btn-icon { font-size:22px; }
+        #speed-val {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 42px;
+            color: #e87c3e;
+            opacity: 0.7;
+            line-height: 1;
+        }
 
-  /* ── LOADING ── */
-  #loading { position:fixed; inset:0; background:#2a3a44; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:100; transition:opacity 1s; }
-  #loading-kanji { font-family:'Zen Kurenaido',sans-serif; font-size:72px; color:#e87c3e; margin-bottom:8px; animation:breathe 2s infinite; }
-  @keyframes breathe { 0%,100%{opacity:0.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.04)} }
-  #loading-title { font-family:'Zen Kurenaido',sans-serif; font-size:18px; color:#c8b89a; opacity:0.85; letter-spacing:6px; margin-bottom:40px; }
-  #loading-bar-wrap { width:220px; height:2px; background:rgba(255,255,255,0.12); }
-  #loading-bar  { height:100%; background:linear-gradient(90deg,var(--torii),var(--blush)); width:0%; transition:width 0.2s ease; }
-  #loading-status { margin-top:14px; font-size:10px; color:#c8b89a; opacity:0.6; letter-spacing:3px; }
+        #speed-label {
+            font-size: 9px;
+            color: #c8b89a;
+            opacity: 0.5;
+            letter-spacing: 3px;
+        }
 
-  /* ── RESPONSIVE ── */
-  @media(max-width:600px){
-    #panel{width:100vw;right:-100vw;padding:56px 22px 40px;}
-    #panel.open{right:0;}
-    .panel-title{font-size:22px;}
-    #title-main{font-size:18px;}
-    #minimap{top:14px;right:14px;width:88px;height:88px;}
-    #speedometer{bottom:175px;right:16px;}
-    #speed-val{font-size:30px;}
-    #controls-hint{display:none;}
-  }
-</style>
+        /* ── MINIMAP ── */
+        #minimap {
+            position: fixed;
+            top: 22px;
+            right: 28px;
+            width: 120px;
+            height: 120px;
+            border-radius: 4px;
+            border: 1px solid rgba(46,35,24,0.15);
+            background: rgba(20,32,40,0.82);
+            box-shadow: 0 2px 12px rgba(46,35,24,0.1);
+            overflow: hidden;
+            z-index: 10;
+        }
+
+            #minimap canvas {
+                width: 100%;
+                height: 100%;
+            }
+
+        #minimap-label {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 7px;
+            letter-spacing: 2px;
+            color: var(--ink);
+            opacity: 0.4;
+        }
+
+        /* ── PROMPT ── */
+        #prompt {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, calc(-50% + 60px));
+            text-align: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 10;
+        }
+
+            #prompt.visible {
+                opacity: 1;
+            }
+
+        #prompt-key {
+            display: inline-block;
+            background: rgba(20,32,40,0.88);
+            border: 1.5px solid #e87c3e;
+            color: #e87c3e;
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 13px;
+            padding: 8px 20px;
+            letter-spacing: 2px;
+            border-radius: 2px;
+            box-shadow: 0 2px 16px rgba(201,74,26,0.2);
+            animation: gentle-pulse 2s infinite;
+        }
+
+        #prompt-name {
+            margin-top: 8px;
+            font-size: 10px;
+            color: var(--ink);
+            opacity: 0.55;
+            letter-spacing: 3px;
+        }
+
+        @keyframes gentle-pulse {
+            0%,100% {
+                box-shadow: 0 2px 16px rgba(201,74,26,0.2);
+            }
+
+            50% {
+                box-shadow: 0 2px 28px rgba(201,74,26,0.45);
+            }
+        }
+
+        /* ── PANEL ── */
+        #panel {
+            position: fixed;
+            top: 0;
+            right: -520px;
+            width: 460px;
+            height: 100vh;
+            background: rgba(28,38,46,0.96);
+            border-left: 2px solid rgba(201,74,26,0.35);
+            padding: 52px 38px 40px;
+            z-index: 20;
+            transition: right 0.55s cubic-bezier(0.16,1,0.3,1);
+            overflow-y: auto;
+            pointer-events: none;
+        }
+
+            #panel.open {
+                right: 0;
+                pointer-events: all;
+            }
+
+            #panel::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(180deg, var(--torii), var(--blush), var(--torii));
+            }
+
+        #panel-close {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            background: none;
+            border: 1px solid rgba(232,124,62,0.5);
+            color: #e87c3e;
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            padding: 5px 14px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+            #panel-close:hover {
+                background: rgba(201,74,26,0.08);
+            }
+
+        .panel-kanji {
+            font-size: 11px;
+            color: #e87c3e;
+            letter-spacing: 4px;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .panel-title {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 28px;
+            color: #e8ddc8;
+            line-height: 1.25;
+            margin-bottom: 6px;
+        }
+
+        .panel-subtitle {
+            font-size: 10px;
+            color: #c8b89a;
+            opacity: 0.7;
+            letter-spacing: 3px;
+            margin-bottom: 22px;
+        }
+
+        .panel-desc {
+            font-size: 13px;
+            color: #c8b8a0;
+            opacity: 0.9;
+            line-height: 2;
+            margin-bottom: 28px;
+        }
+
+        .panel-divider {
+            height: 1px;
+            background: linear-gradient(90deg,rgba(201,74,26,0.25),transparent);
+            margin: 22px 0;
+        }
+
+        .panel-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .tech-tag {
+            font-size: 10px;
+            letter-spacing: 1px;
+            border: 1px solid rgba(78,122,90,0.4);
+            color: var(--moss);
+            padding: 4px 12px;
+            border-radius: 2px;
+            background: rgba(122,171,136,0.08);
+        }
+
+        .panel-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .panel-link {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            padding: 11px 22px;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+            .panel-link.primary {
+                background: var(--torii);
+                color: var(--cream);
+                box-shadow: 0 3px 14px rgba(201,74,26,0.3);
+            }
+
+                .panel-link.primary:hover {
+                    box-shadow: 0 4px 22px rgba(201,74,26,0.45);
+                }
+
+            .panel-link.secondary {
+                border: 1px solid rgba(78,122,90,0.5);
+                color: var(--moss);
+                background: transparent;
+            }
+
+                .panel-link.secondary:hover {
+                    background: rgba(122,171,136,0.1);
+                }
+
+        /* ── JOYSTICK ── */
+        #joystick-zone {
+            position: fixed;
+            bottom: 32px;
+            left: 32px;
+            width: 130px;
+            height: 130px;
+            z-index: 30;
+            display: none;
+            touch-action: none;
+        }
+
+        #joystick-base {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: rgba(254,246,236,0.3);
+            border: 1.5px solid rgba(201,74,26,0.3);
+            box-shadow: 0 2px 16px rgba(201,74,26,0.1);
+        }
+
+        #joystick-stick {
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%,rgba(242,167,176,0.7),rgba(201,74,26,0.35));
+            border: 1.5px solid rgba(201,74,26,0.6);
+            box-shadow: 0 2px 12px rgba(201,74,26,0.3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            pointer-events: none;
+        }
+
+        /* ── ENTER BTN ── */
+        #enter-btn {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 78px;
+            height: 78px;
+            border-radius: 50%;
+            background: rgba(254,246,236,0.8);
+            border: 1.5px solid rgba(201,74,26,0.5);
+            color: var(--torii);
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 10px;
+            letter-spacing: 1px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 3px;
+            z-index: 30;
+            cursor: pointer;
+            animation: gentle-pulse 2s infinite;
+            touch-action: manipulation;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+            #enter-btn.visible {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+        #enter-btn-icon {
+            font-size: 22px;
+        }
+
+        /* ── LOADING ── */
+        #loading {
+            position: fixed;
+            inset: 0;
+            background: #2a3a44;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: opacity 1s;
+        }
+
+        #loading-kanji {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 72px;
+            color: #e87c3e;
+            margin-bottom: 8px;
+            animation: breathe 2s infinite;
+        }
+
+        @keyframes breathe {
+            0%,100% {
+                opacity: 0.7;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.04)
+            }
+        }
+
+        #loading-title {
+            font-family: 'Zen Kurenaido',sans-serif;
+            font-size: 18px;
+            color: #c8b89a;
+            opacity: 0.85;
+            letter-spacing: 6px;
+            margin-bottom: 40px;
+        }
+
+        #loading-bar-wrap {
+            width: 220px;
+            height: 2px;
+            background: rgba(255,255,255,0.12);
+        }
+
+        #loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg,var(--torii),var(--blush));
+            width: 0%;
+            transition: width 0.2s ease;
+        }
+
+        #loading-status {
+            margin-top: 14px;
+            font-size: 10px;
+            color: #c8b89a;
+            opacity: 0.6;
+            letter-spacing: 3px;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:600px) {
+            #panel {
+                width: 100vw;
+                right: -100vw;
+                padding: 56px 22px 40px;
+            }
+
+                #panel.open {
+                    right: 0;
+                }
+
+            .panel-title {
+                font-size: 22px;
+            }
+
+            #title-main {
+                font-size: 18px;
+            }
+
+            #minimap {
+                top: 14px;
+                right: 14px;
+                width: 88px;
+                height: 88px;
+            }
+
+            #speedometer {
+                bottom: 175px;
+                right: 16px;
+            }
+
+            #speed-val {
+                font-size: 30px;
+            }
+
+            #controls-hint {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 
 
-<div id="loading">
-  <div id="loading-kanji">旅</div>
-  <div id="loading-title">TABI PORTFOLIO</div>
-  <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
-  <div id="loading-status">里山を描いています...</div>
-</div>
+    <div id="loading">
+        <div id="loading-kanji">旅</div>
+        <div id="loading-title">TABI PORTFOLIO</div>
+        <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
+        <div id="loading-status">里山を描いています...</div>
+    </div>
 
-<canvas id="canvas"></canvas>
+    <canvas id="canvas"></canvas>
 
-<div id="title">
-  <div id="title-main">旅ポートフォリオ</div>
-  <div id="title-sub">TABI PORTFOLIO · JOURNEY</div>
-</div>
+    <div id="title">
+        <div id="title-main">SKRT</div>
+        <div id="title-sub">PORTFOLIO · JOURNEY</div>
+    </div>
 
-<div id="controls-hint">
-  <b>W A S D</b> — 走る · drive<br>
-  <b>E</b> — 探索する · explore<br>
-  <b>ESC</b> — 戻る · close
-</div>
+    <div id="controls-hint">
+        <b>W A S D</b> — drive<br>
+        <b>E</b> — explore<br>
+        <b>ESC</b> — close<br>
+        <b>T</b> — tour
+    </div>
+    <button id="tour-btn" onclick="toggleTour()" style="position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(20,32,40,0.82);border:1.5px solid rgba(201,74,26,0.5);color:#e87c3e;font-family:'Zen Kurenaido',sans-serif;font-size:11px;letter-spacing:2px;padding:7px 20px;cursor:pointer;border-radius:2px;transition:all 0.3s;">⛩ AUTO TOUR · 自動ツアー</button>
 
-<div id="speedometer">
-  <div id="speed-val">000</div>
-  <div id="speed-label">KM/H</div>
-</div>
+    <div id="speedometer">
+        <div id="speed-val">000</div>
+        <div id="speed-label">KM/H</div>
+    </div>
 
-<div id="minimap">
-  <canvas id="minimap-canvas" width="120" height="120"></canvas>
-  <div id="minimap-label">MAP · 地図</div>
-</div>
+    <div id="minimap">
+        <canvas id="minimap-canvas" width="120" height="120"></canvas>
+        <div id="minimap-label">MAP · 地図</div>
+    </div>
 
-<div id="joystick-zone">
-  <div id="joystick-base"></div>
-  <div id="joystick-stick"></div>
-</div>
+    <div id="joystick-zone">
+        <div id="joystick-base"></div>
+        <div id="joystick-stick"></div>
+    </div>
 
-<div id="enter-btn" onclick="mobileEnter()">
-  <div id="enter-btn-icon">⛩</div>
-  <div>ENTER</div>
-</div>
+    <div id="enter-btn" onclick="mobileEnter()">
+        <div id="enter-btn-icon">⛩</div>
+        <div>ENTER</div>
+    </div>
 
-<div id="prompt">
-  <div id="prompt-key">[ E ] 探索する</div>
-  <div id="prompt-name"></div>
-</div>
+    <div id="prompt">
+        <div id="prompt-key">[ E ] Enter</div>
+        <div id="prompt-name"></div>
+    </div>
 
-<div id="panel">
-  <button id="panel-close" onclick="closePanel()">✕ 閉じる</button>
-  <div class="panel-kanji" id="panel-tag">作品</div>
-  <div class="panel-title" id="panel-title">Project Title</div>
-  <div class="panel-subtitle" id="panel-subtitle">SUBTITLE</div>
-  <div class="panel-desc" id="panel-desc">Description</div>
-  <div class="panel-divider"></div>
-  <div class="panel-tech" id="panel-tech"></div>
-  <div class="panel-links">
-    <a class="panel-link primary"   id="panel-link1" href="#">作品を見る</a>
-    <a class="panel-link secondary" id="panel-link2" href="#">ソースコード</a>
-  </div>
-</div>
+    <div id="panel">
+        <button id="panel-close" onclick="closePanel()">✕ Close</button>
+        <div class="panel-kanji" id="panel-tag">作品</div>
+        <div class="panel-title" id="panel-title">Project Title</div>
+        <div class="panel-subtitle" id="panel-subtitle">SUBTITLE</div>
+        <div id="panel-img-wrap" style="display:none;margin-bottom:18px;border-radius:3px;overflow:hidden;max-height:180px;">
+            <img id="panel-img" src="" alt="" style="width:100%;height:180px;object-fit:cover;display:block;opacity:0;transition:opacity 0.5s;" onload="this.style.opacity=1" />
+        </div>
+        <div class="panel-desc" id="panel-desc">Description</div>
+        <div class="panel-divider"></div>
+        <div class="panel-tech" id="panel-tech"></div>
+        <div class="panel-links">
+            <a class="panel-link primary" id="panel-link1" href="#">Project Links</a>
+            <a class="panel-link secondary" id="panel-link2" href="#">Placeholder</a>
+        </div>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-// ─── PROJECT DATA ─────────────────────────────────────────────────────────────
-const PROJECTS = [
-  { id:'p1', name:'FLASKS & FISTICUFFS', tag:'コード · GRAD SCHOOL', title:'Flasks & Fisticuffs', subtitle:'3D INDIE ROGUE-LITE GAME',
-    desc:'A 3rd-person rogue-lite action RPG developed by a team of 5 over one semester for CS6457 at Georgia Tech. Features an explorable world and an alchemy-based crafting system - brew bombs, potions, and oils to power up your combat. Served as UI Designer & Developer.',
-    tech:['Unity','C#','Adobe Illustrator','Audacity','Adobe Premiere'], link1:'https://drive.google.com/file/d/1kmz-W9srHWuKlbUBdxAOjL2j9YpLI0kq/view', link1Label:'ダウンロード · Download', link2:'#', link2Label:'GitHub', color:0xe87c3e, position:{x:-26,z:-26} },
-  { id:'p2', name:'LOST IN SPACE', tag:'コード · GRAD SCHOOL', title:'Lost in Space', subtitle:'PARTICLE FILTER · LOCALIZATION',
-    desc:'After a wormhole drops our spaceship in an unknown location, a particle filter localizes us by measuring gravitational pull from planets. Estimates spaceship position (x,y), then computes the angle to Earth to beam messages home. Handles noisy sensors and nonlinear inverse-square gravity dynamics.',
-    tech:['Python','Particle Filter','Localization','SLAM'], link1:'https://itsjenwu.com/lost-in-space/', link1Label:'作品を見る · View', link2:'#', link2Label:'GitHub', color:0xc94a1a, position:{x:26,z:-26} },
-  { id:'p3', name:'GOOGLE MY MAPS', tag:'デザイン · GRAD SCHOOL', title:'Google My Maps', subtitle:'HCI STUDY · UX REDESIGN',
-    desc:'Team HCI project applying the full design lifecycle to Google\u0027s My Maps. Conducted needfinding surveys, heuristic evaluations, and iterative prototype testing to improve discoverability, social sharing, and layer usability - aiming to help users reach a flow-state while planning travel.',
-    tech:['Figma','Adobe XD','Adobe Premiere','Usability Testing'], link1:'https://itsjenwu.com/google-my-maps/', link1Label:'作品を見る · View', link2:'https://www.figma.com/proto/ghAAwCdKqpsikIBV2yiO5r/HCI', link2Label:'Figma Prototype', color:0x7aab88, position:{x:-26,z:26} },
-  { id:'p4', name:'WAREHOUSE SEARCH', tag:'コード · GRAD SCHOOL', title:'Warehouse Search', subtitle:'A* PATH PLANNING',
-    desc:'Programmed a humanoid robot to navigate a 2D warehouse grid, pick up boxes, and deliver them to a target. Implemented A* search with a weighted Chebyshev heuristic to handle non-uniform movement costs (horizontal/vertical = 2, diagonal = 3) and backtracking to recover the optimal path.',
-    tech:['Python','A* Search','Path Planning','Heuristics'], link1:'https://itsjenwu.com/warehouse-search/', link1Label:'作品を見る · View', link2:'#', link2Label:'GitHub', color:0xf2a7b0, position:{x:26,z:26} },
-  { id:'p5', name:'GYST MUSEUM', tag:'デザイン · UNDERGRAD', title:'GYST Museum', subtitle:'UX DESIGN - PEOPLES CHOICE',
-    desc:'Award-winning UX concept (Peoples Choice Award) tackling attention management for students. Designed an interactive museum space where students experiment with different study environments to find their flow. Full research, paper prototype, and high-fidelity Adobe XD build - team of 4 at UIUC.',
-    tech:['Adobe XD','Adobe Illustrator','UX Research','Prototyping'], link1:'https://itsjenwu.com/gyst-museum/', link1Label:'作品を見る · View', link2:'https://xd.adobe.com/view/f96f7328-9933-476e-8529-b29750e30fa9-ac3c/', link2Label:'Try App', color:0x7aaec8, position:{x:0,z:-44} },
-];
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>// ─── PROJECT DATA ─────────────────────────────────────────────────────────────
+        const PROJECTS = [
+            {
+                id: 'p1', name: 'FLASKS & FISTICUFFS', tag: 'コード · GRAD SCHOOL', title: 'Flasks & Fisticuffs', subtitle: '3D INDIE ROGUE-LITE GAME',
+                desc: 'A 3rd-person rogue-lite action RPG developed by a team of 5 over one semester for CS6457 at Georgia Tech. Features an explorable world and an alchemy-based crafting system - brew bombs, potions, and oils to power up your combat. Served as UI Designer & Developer.',
+                tech: ['Unity', 'C#', 'Adobe Illustrator', 'Audacity', 'Adobe Premiere'], link1: 'https://drive.google.com/file/d/1kmz-W9srHWuKlbUBdxAOjL2j9YpLI0kq/view', link1Label: 'ダウンロード · Download', link2: '#', link2Label: 'GitHub', img: 'https://itsjenwu.com/wp-content/uploads/2021/02/lotus-abstract-sticker.png', color: 0xe87c3e, position: { x: -26, z: -26 }
+            },
+            {
+                id: 'p2', name: 'LOST IN SPACE', tag: 'コード · GRAD SCHOOL', title: 'Lost in Space', subtitle: 'PARTICLE FILTER · LOCALIZATION',
+                desc: 'After a wormhole drops our spaceship in an unknown location, a particle filter localizes us by measuring gravitational pull from planets. Estimates spaceship position (x,y), then computes the angle to Earth to beam messages home. Handles noisy sensors and nonlinear inverse-square gravity dynamics.',
+                tech: ['Python', 'Particle Filter', 'Localization', 'SLAM'], link1: 'https://itsjenwu.com/lost-in-space/', link1Label: '作品を見る · View', link2: '#', link2Label: 'GitHub', img: 'https://itsjenwu.com/wp-content/uploads/2025/03/test4-1.gif', color: 0xc94a1a, position: { x: 26, z: -26 }
+            },
+            {
+                id: 'p3', name: 'GOOGLE MY MAPS', tag: 'デザイン · GRAD SCHOOL', title: 'Google My Maps', subtitle: 'HCI STUDY · UX REDESIGN',
+                desc: 'Team HCI project applying the full design lifecycle to Google\u0027s My Maps. Conducted needfinding surveys, heuristic evaluations, and iterative prototype testing to improve discoverability, social sharing, and layer usability - aiming to help users reach a flow-state while planning travel.',
+                tech: ['Figma', 'Adobe XD', 'Adobe Premiere', 'Usability Testing'], link1: 'https://itsjenwu.com/google-my-maps/', link1Label: '作品を見る · View', link2: 'https://www.figma.com/proto/ghAAwCdKqpsikIBV2yiO5r/HCI', link2Label: 'Figma Prototype', img: 'https://itsjenwu.com/wp-content/uploads/2025/03/Melbourne-example.png', color: 0x7aab88, position: { x: -26, z: 26 }
+            },
+            {
+                id: 'p4', name: 'WAREHOUSE SEARCH', tag: 'コード · GRAD SCHOOL', title: 'Warehouse Search', subtitle: 'A* PATH PLANNING',
+                desc: 'Programmed a humanoid robot to navigate a 2D warehouse grid, pick up boxes, and deliver them to a target. Implemented A* search with a weighted Chebyshev heuristic to handle non-uniform movement costs (horizontal/vertical = 2, diagonal = 3) and backtracking to recover the optimal path.',
+                tech: ['Python', 'A* Search', 'Path Planning', 'Heuristics'], link1: 'https://itsjenwu.com/warehouse-search/', link1Label: '作品を見る · View', link2: '#', link2Label: 'GitHub', img: 'https://itsjenwu.com/wp-content/uploads/2025/03/test4-2.gif', color: 0xf2a7b0, position: { x: 26, z: 26 }
+            },
+            {
+                id: 'p0', name: 'ABOUT ME', tag: 'こんにちは · HELLO', title: 'Jen Wu', subtitle: 'DEVELOPER & DESIGNER · BOSTON',
+                desc: 'MS Computer Science (Interactive Intelligence) from Georgia Tech, BS CS + Art & Design from UIUC. Currently a Senior Technology Analyst at Accenture. Passionate about building things that sit at the intersection of code, design, and human experience.',
+                tech: ['Georgia Tech', 'UIUC', 'Accenture', 'Greater Boston'], link1: 'https://www.linkedin.com/in/jenwu20/', link1Label: 'LinkedIn', link2: 'https://github.com/itsjenwu', link2Label: 'GitHub',
+                img: 'https://itsjenwu.com/wp-content/uploads/2021/02/lotus-abstract-sticker.png',
+                color: 0xf2c97a, isAboutMe: true, position: { x: 0, z: 0 }
+            },
+            {
+                id: 'p5', name: 'GYST MUSEUM', tag: 'デザイン · UNDERGRAD', title: 'GYST Museum', subtitle: 'UX DESIGN - PEOPLES CHOICE',
+                desc: 'Award-winning UX concept (Peoples Choice Award) tackling attention management for students. Designed an interactive museum space where students experiment with different study environments to find their flow. Full research, paper prototype, and high-fidelity Adobe XD build - team of 4 at UIUC.',
+                tech: ['Adobe XD', 'Adobe Illustrator', 'UX Research', 'Prototyping'], link1: 'https://itsjenwu.com/gyst-museum/', link1Label: '作品を見る · View', link2: 'https://xd.adobe.com/view/f96f7328-9933-476e-8529-b29750e30fa9-ac3c/', link2Label: 'Try App', img: 'https://itsjenwu.com/wp-content/uploads/2021/02/gyst-poster.png', color: 0x7aaec8, position: { x: 0, z: -44 }
+            },
+        ];
 
-// ─── RENDERER ─────────────────────────────────────────────────────────────────
-const canvas = document.getElementById('canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.72;
+        // ─── RENDERER ─────────────────────────────────────────────────────────────────
+        const canvas = document.getElementById('canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 0.72;
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x3a5a6e);
-scene.fog = new THREE.FogExp2(0x2e4a5c, 0.016);
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x3a5a6e);
+        scene.fog = new THREE.FogExp2(0x2e4a5c, 0.016);
 
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 300);
+        // Day/night cycle state
+        const CYCLE_SPEED = 0.00018; // full cycle ~9 min
+        let cycleT = 0.25; // start at dusk (0=midnight,0.25=dawn,0.5=noon,0.75=dusk)
+        const skyColors = [{ t: 0, c: [0x0d1a2a] }, { t: 0.2, c: [0x1a2e44] }, { t: 0.28, c: [0xf4903a] }, { t: 0.35, c: [0x7ab0d8] }, { t: 0.5, c: [0x5a90c8] }, { t: 0.65, c: [0x7ab0d8] }, { t: 0.72, c: [0xf07830] }, { t: 0.8, c: [0x1a2e44] }, { t: 1, c: [0x0d1a2a] }];
+        const fogColors = [{ t: 0, c: [0x060e18] }, { t: 0.25, c: [0x1a3048] }, { t: 0.5, c: [0x3a6080] }, { t: 0.75, c: [0x1a3048] }, { t: 1, c: [0x060e18] }];
+        const sunColors = [{ t: 0, c: [0x102040] }, { t: 0.25, c: [0xff8030] }, { t: 0.5, c: [0xfff0d0] }, { t: 0.75, c: [0xff7020] }, { t: 1, c: [0x102040] }];
+        const hemTopColors = [{ t: 0, c: [0x0a1828] }, { t: 0.5, c: [0x5a8ab8] }, { t: 1, c: [0x0a1828] }];
+        function lerpCycleColor(arr, t) {
+            for (let i = 0; i < arr.length - 1; i++) {
+                if (t >= arr[i].t && t <= arr[i + 1].t) {
+                    const f = (t - arr[i].t) / (arr[i + 1].t - arr[i].t);
+                    const ca = arr[i].c[0], cb = arr[i + 1].c[0];
+                    const r = ((ca >> 16) & 0xff) * (1 - f) + ((cb >> 16) & 0xff) * f;
+                    const g = ((ca >> 8) & 0xff) * (1 - f) + ((cb >> 8) & 0xff) * f;
+                    const b = (ca & 0xff) * (1 - f) + (cb & 0xff) * f;
+                    return new THREE.Color((r / 255), (g / 255), (b / 255));
+                }
+            }
+            return new THREE.Color(arr[0].c[0]);
+        }
+        function updateDayNight() {
+            cycleT = (cycleT + CYCLE_SPEED) % 1;
+            const sky = lerpCycleColor(skyColors, cycleT);
+            scene.background = sky;
+            scene.fog.color = lerpCycleColor(fogColors, cycleT);
+            sun.color = lerpCycleColor(sunColors, cycleT);
+            // Sun intensity: bright at noon, dim at night
+            const sI = Math.max(0.05, Math.sin(cycleT * Math.PI * 2) * 0.9 + 0.4);
+            sun.intensity = sI;
+            renderer.toneMappingExposure = 0.45 + sI * 0.35;
+            // Sun arc position
+            const sunAngle = (cycleT - 0.25) * Math.PI * 2;
+            sun.position.set(Math.cos(sunAngle) * 80, Math.sin(sunAngle) * 80, 20);
+            // Stars: show at night (cycleT near 0 or 1, or near midnight)
+            const nightness = Math.max(0, 1 - Math.abs(Math.sin(cycleT * Math.PI * 2)) * 2.5);
+            starField.material.opacity = Math.min(1, nightness * 2.5);
+        }
 
-// ─── LIGHTING ─────────────────────────────────────────────────────────────────
-const sun = new THREE.DirectionalLight(0xffd8a0, 1.3);
-sun.position.set(40, 60, 20);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-sun.shadow.camera.near = 1; sun.shadow.camera.far = 200;
-sun.shadow.camera.left = -80; sun.shadow.camera.right = 80;
-sun.shadow.camera.top = 80; sun.shadow.camera.bottom = -80;
-scene.add(sun);
-scene.add(new THREE.HemisphereLight(0x5a7a9a, 0x3a5a38, 0.65));
-scene.add(new THREE.AmbientLight(0x8090a0, 0.25));
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 300);
 
-// ─── LOW-POLY TERRAIN ─────────────────────────────────────────────────────────
-(function buildTerrain() {
-  const geo = new THREE.PlaneGeometry(220, 220, 40, 40);
-  const pos = geo.attributes.position;
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i), z = pos.getY(i);
-    const d = Math.sqrt(x*x + z*z);
-    const rim = Math.max(0, (d - 52) / 60);
-    let h = rim * (7 + Math.sin(x*0.11)*3 + Math.cos(z*0.09)*2.5);
-    h += Math.max(0, Math.sin(x*0.06+1.1) * Math.cos(z*0.07) * 5 * rim);
-    pos.setZ(i, h);
-  }
-  geo.computeVertexNormals();
-  const colors = [];
-  for (let i = 0; i < pos.count; i++) {
-    const h = pos.getZ(i), t = Math.min(1, h / 9);
-    colors.push(0.44 + t*0.34, 0.63 + t*0.1, 0.38 - t*0.08);
-  }
-  geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-  const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true }));
-  mesh.rotation.x = -Math.PI / 2;
-  mesh.receiveShadow = true;
-  scene.add(mesh);
-})();
+        // ─── LIGHTING ─────────────────────────────────────────────────────────────────
+        const sun = new THREE.DirectionalLight(0xffd8a0, 1.3);
+        sun.position.set(40, 60, 20);
+        sun.castShadow = true;
+        sun.shadow.mapSize.set(2048, 2048);
+        sun.shadow.camera.near = 1; sun.shadow.camera.far = 200;
+        sun.shadow.camera.left = -80; sun.shadow.camera.right = 80;
+        sun.shadow.camera.top = 80; sun.shadow.camera.bottom = -80;
+        scene.add(sun);
+        scene.add(new THREE.HemisphereLight(0x5a7a9a, 0x3a5a38, 0.65));
+        scene.add(new THREE.AmbientLight(0x8090a0, 0.25));
 
-// ─── DIRT PATHS ───────────────────────────────────────────────────────────────
-function makePath(x1,z1,x2,z2,w=2.5) {
-  const len = Math.sqrt((x2-x1)**2+(z2-z1)**2);
-  const m = new THREE.Mesh(new THREE.PlaneGeometry(w,len), new THREE.MeshLambertMaterial({color:0xc9a97a}));
-  m.rotation.x = -Math.PI/2;
-  m.position.set((x1+x2)/2, 0.02, (z1+z2)/2);
-  m.rotation.z = -Math.atan2(x2-x1,z2-z1);
-  scene.add(m);
-}
-[[0,8,-26,-26],[0,8,26,-26],[0,8,-26,26],[0,8,26,26],[0,8,0,-44],
- [-26,-26,26,-26,2.5],[-26,26,26,26,2.5],[-26,-26,-26,26,2.5],[26,-26,26,26,2.5]
-].forEach(a=>makePath(...a));
+        // ─── LOW-POLY TERRAIN ─────────────────────────────────────────────────────────
+        (function buildTerrain() {
+            const geo = new THREE.PlaneGeometry(220, 220, 40, 40);
+            const pos = geo.attributes.position;
+            for (let i = 0; i < pos.count; i++) {
+                const x = pos.getX(i), z = pos.getY(i);
+                const d = Math.sqrt(x * x + z * z);
+                const rim = Math.max(0, (d - 52) / 60);
+                let h = rim * (7 + Math.sin(x * 0.11) * 3 + Math.cos(z * 0.09) * 2.5);
+                h += Math.max(0, Math.sin(x * 0.06 + 1.1) * Math.cos(z * 0.07) * 5 * rim);
+                pos.setZ(i, h);
+            }
+            geo.computeVertexNormals();
+            const colors = [];
+            for (let i = 0; i < pos.count; i++) {
+                const h = pos.getZ(i), t = Math.min(1, h / 9);
+                colors.push(0.44 + t * 0.34, 0.63 + t * 0.1, 0.38 - t * 0.08);
+            }
+            geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true }));
+            mesh.rotation.x = -Math.PI / 2;
+            mesh.receiveShadow = true;
+            scene.add(mesh);
+        })();
 
-// ─── LOW-POLY TREES ───────────────────────────────────────────────────────────
-function makeTree(x, z, s=1, season='green') {
-  const g = new THREE.Group();
-  g.add((()=>{const _m=new THREE.Mesh(
-    new THREE.CylinderGeometry(0.18*s,0.28*s,1.6*s,5),
-    new THREE.MeshLambertMaterial({color:0x7a5c3a})
-  );_m.position.set(0,0.8*s,0);return _m;})());
-  const leaf = {green:[0x5a9e68,0x4a8a58,0x6ab878],sakura:[0xf4b8c8,0xf0a0b8,0xfaccd8],autumn:[0xd4743a,0xe8924a,0xc86030]}[season]||[0x5a9e68,0x4a8a58,0x6ab878];
-  [[1.6,2.0,1.6],[1.2,1.8,2.2],[0.8,1.5,3.2]].forEach(([r,h,y],i)=>{
-    const cone = new THREE.Mesh(new THREE.ConeGeometry(r*s,h*s,5+i), new THREE.MeshLambertMaterial({color:leaf[i]}));
-    cone.position.y = y*s; cone.castShadow=true; g.add(cone);
-  });
-  g.position.set(x,0,z); scene.add(g);
-}
+        // ─── DIRT PATHS ───────────────────────────────────────────────────────────────
+        function makePath(x1, z1, x2, z2, w = 2.5) {
+            const len = Math.sqrt((x2 - x1) ** 2 + (z2 - z1) ** 2);
+            const m = new THREE.Mesh(new THREE.PlaneGeometry(w, len), new THREE.MeshLambertMaterial({ color: 0xc9a97a }));
+            m.rotation.x = -Math.PI / 2;
+            m.position.set((x1 + x2) / 2, 0.02, (z1 + z2) / 2);
+            m.rotation.z = -Math.atan2(x2 - x1, z2 - z1);
+            scene.add(m);
+        }
+        [[0, 8, -26, -26], [0, 8, 26, -26], [0, 8, -26, 26], [0, 8, 26, 26], [0, 8, 0, -44],
+        [-26, -26, 26, -26, 2.5], [-26, 26, 26, 26, 2.5], [-26, -26, -26, 26, 2.5], [26, -26, 26, 26, 2.5]
+        ].forEach(a => makePath(...a));
 
-[[-45,-45],[-35,-50],[-55,-30],[-60,-10],[-55,15],[-45,40],[-30,52],[-10,58],
- [10,56],[30,50],[48,38],[56,15],[58,-8],[50,-30],[38,-50],[18,-57],
- [-5,-60],[-22,-55],[45,-45],[42,42],[-42,44]].forEach(([x,z])=>{
-  const s = Math.random()<0.25?'sakura':Math.random()<0.15?'autumn':'green';
-  makeTree(x+(Math.random()-.5)*6, z+(Math.random()-.5)*6, 0.8+Math.random()*0.7, s);
-});
-for(let i=0;i<28;i++){
-  const a=Math.random()*Math.PI*2, r=32+Math.random()*18;
-  const x=Math.cos(a)*r, z=Math.sin(a)*r;
-  if(Math.abs(x)<7||Math.abs(z)<7) continue;
-  if(Math.sqrt(x*x+(z-8)*(z-8))<14) continue; // clearance around car spawn
-  makeTree(x,z,0.5+Math.random()*0.5,Math.random()<0.2?'sakura':'green');
-}
+        // ─── LOW-POLY TREES ───────────────────────────────────────────────────────────
+        function makeTree(x, z, s = 1, season = 'green') {
+            const g = new THREE.Group();
+            g.add((() => {
+                const _m = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.18 * s, 0.28 * s, 1.6 * s, 5),
+                    new THREE.MeshLambertMaterial({ color: 0x7a5c3a })
+                ); _m.position.set(0, 0.8 * s, 0); return _m;
+            })());
+            const leaf = { green: [0x5a9e68, 0x4a8a58, 0x6ab878], sakura: [0xf4b8c8, 0xf0a0b8, 0xfaccd8], autumn: [0xd4743a, 0xe8924a, 0xc86030] }[season] || [0x5a9e68, 0x4a8a58, 0x6ab878];
+            [[1.6, 2.0, 1.6], [1.2, 1.8, 2.2], [0.8, 1.5, 3.2]].forEach(([r, h, y], i) => {
+                const cone = new THREE.Mesh(new THREE.ConeGeometry(r * s, h * s, 5 + i), new THREE.MeshLambertMaterial({ color: leaf[i] }));
+                cone.position.y = y * s; cone.castShadow = true; g.add(cone);
+            });
+            g.position.set(x, 0, z); scene.add(g);
+        }
 
-// ─── TORII GATE STATIONS ──────────────────────────────────────────────────────
-const stations = [];
-PROJECTS.forEach(proj => {
-  const g = new THREE.Group();
-  g.position.set(proj.position.x, 0, proj.position.z);
-  g.userData = { project: proj };
-  const mat = new THREE.MeshLambertMaterial({ color: proj.color });
+        [[-45, -45], [-35, -50], [-55, -30], [-60, -10], [-55, 15], [-45, 40], [-30, 52], [-10, 58],
+        [10, 56], [30, 50], [48, 38], [56, 15], [58, -8], [50, -30], [38, -50], [18, -57],
+        [-5, -60], [-22, -55], [45, -45], [42, 42], [-42, 44]].forEach(([x, z]) => {
+            const s = Math.random() < 0.25 ? 'sakura' : Math.random() < 0.15 ? 'autumn' : 'green';
+            makeTree(x + (Math.random() - .5) * 6, z + (Math.random() - .5) * 6, 0.8 + Math.random() * 0.7, s);
+        });
+        for (let i = 0; i < 28; i++) {
+            const a = Math.random() * Math.PI * 2, r = 32 + Math.random() * 18;
+            const x = Math.cos(a) * r, z = Math.sin(a) * r;
+            if (Math.abs(x) < 7 || Math.abs(z) < 7) continue;
+            if (Math.sqrt(x * x + (z - 8) * (z - 8)) < 14) continue; // clearance around car spawn
+            makeTree(x, z, 0.5 + Math.random() * 0.5, Math.random() < 0.2 ? 'sakura' : 'green');
+        }
 
-  // Stone base platform (hexagonal)
-  g.add((()=>{const _m=new THREE.Mesh(
-    new THREE.CylinderGeometry(4.2,4.5,0.26,6),
-    new THREE.MeshLambertMaterial({color:0xb0a090})
-  );_m.position.set(0,0.13,0);_m.receiveShadow=true;return _m;})());
+        // ─── TORII GATE STATIONS ──────────────────────────────────────────────────────
+        const stations = [];
+        PROJECTS.forEach(proj => {
+            if (proj.isAboutMe) return; // About Me has its own marker built separately
+            const g = new THREE.Group();
+            g.position.set(proj.position.x, 0, proj.position.z);
+            g.userData = { project: proj };
+            const mat = new THREE.MeshLambertMaterial({ color: proj.color });
 
-  // Gravel circle (slightly lighter)
-  g.add((()=>{const _m=new THREE.Mesh(
-    new THREE.CylinderGeometry(3.8,3.8,0.06,20),
-    new THREE.MeshLambertMaterial({color:0xd0c0aa})
-  );_m.position.set(0,0.26,0);return _m;})());
+            // Stone base platform (hexagonal)
+            g.add((() => {
+                const _m = new THREE.Mesh(
+                    new THREE.CylinderGeometry(4.2, 4.5, 0.26, 6),
+                    new THREE.MeshLambertMaterial({ color: 0xb0a090 })
+                ); _m.position.set(0, 0.13, 0); _m.receiveShadow = true; return _m;
+            })());
 
-  // Torii posts
-  const postGeo = new THREE.CylinderGeometry(0.21,0.26,5.5,8);
-  [-1.5,1.5].forEach(x => {
-    const p=new THREE.Mesh(postGeo,mat); p.position.set(x,2.75,0); p.castShadow=true; g.add(p);
-  });
-  // Kasagi (top beam)
-  const kas=new THREE.Mesh(new THREE.BoxGeometry(4.8,0.27,0.54),mat);
-  kas.position.set(0,5.58,0); kas.castShadow=true; g.add(kas);
-  // Nuki (lower beam)
-  g.add((()=>{const _m=new THREE.Mesh(new THREE.BoxGeometry(3.6,0.2,0.36),mat);_m.position.set(0,4.48,0);return _m;})());
-  // Shimenawa rope
-  const rope=new THREE.Mesh(new THREE.TorusGeometry(1.4,0.07,5,24),new THREE.MeshLambertMaterial({color:0xe8d870}));
-  rope.rotation.x=Math.PI/2; rope.position.set(0,4.08,0); g.add(rope);
+            // Gravel circle (slightly lighter)
+            g.add((() => {
+                const _m = new THREE.Mesh(
+                    new THREE.CylinderGeometry(3.8, 3.8, 0.06, 20),
+                    new THREE.MeshLambertMaterial({ color: 0xd0c0aa })
+                ); _m.position.set(0, 0.26, 0); return _m;
+            })());
 
-  // Hanging lantern
-  const lanMat=new THREE.MeshLambertMaterial({color:0xfff8e0,emissive:new THREE.Color(proj.color),emissiveIntensity:0.5});
-  const lantern=new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.55,6),lanMat);
-  lantern.position.set(0,5.05,0); g.add(lantern);
-  // Lantern top cap
-  g.add((()=>{const _m=new THREE.Mesh(new THREE.ConeGeometry(0.26,0.2,6),new THREE.MeshLambertMaterial({color:0xcc3300}));_m.position.set(0,5.43,0);return _m;})());
+            // Torii posts
+            const postGeo = new THREE.CylinderGeometry(0.21, 0.26, 5.5, 8);
+            [-1.5, 1.5].forEach(x => {
+                const p = new THREE.Mesh(postGeo, mat); p.position.set(x, 2.75, 0); p.castShadow = true; g.add(p);
+            });
+            // Kasagi (top beam)
+            const kas = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.27, 0.54), mat);
+            kas.position.set(0, 5.58, 0); kas.castShadow = true; g.add(kas);
+            // Nuki (lower beam)
+            g.add((() => { const _m = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.2, 0.36), mat); _m.position.set(0, 4.48, 0); return _m; })());
+            // Shimenawa rope
+            const rope = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.07, 5, 24), new THREE.MeshLambertMaterial({ color: 0xe8d870 }));
+            rope.rotation.x = Math.PI / 2; rope.position.set(0, 4.08, 0); g.add(rope);
 
-  // Glow light
-  const light=new THREE.PointLight(proj.color,2.5,18);
-  light.position.set(0,5.1,0); g.add(light);
+            // Hanging lantern
+            const lanMat = new THREE.MeshLambertMaterial({ color: 0xfff8e0, emissive: new THREE.Color(proj.color), emissiveIntensity: 0.5 });
+            const lantern = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.55, 6), lanMat);
+            lantern.position.set(0, 5.05, 0); g.add(lantern);
+            // Lantern top cap
+            g.add((() => { const _m = new THREE.Mesh(new THREE.ConeGeometry(0.26, 0.2, 6), new THREE.MeshLambertMaterial({ color: 0xcc3300 })); _m.position.set(0, 5.43, 0); return _m; })());
 
-  // Komainu (lion-dog guardian) — two simple blocky shapes
-  [-1.8,1.8].forEach(x=>{
-    const base=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.55,0.5),new THREE.MeshLambertMaterial({color:0xd0c0aa}));
-    base.position.set(x,0.28,2.2); base.castShadow=true; g.add(base);
-    const head=new THREE.Mesh(new THREE.BoxGeometry(0.36,0.36,0.36),new THREE.MeshLambertMaterial({color:0xd0c0aa}));
-    head.position.set(x,0.72,2.2); g.add(head);
-  });
+            // Glow light
+            const light = new THREE.PointLight(proj.color, 2.5, 18);
+            light.position.set(0, 5.1, 0); g.add(light);
 
-  // Stone steps
-  for(let s=1;s<=3;s++){
-    const step=new THREE.Mesh(new THREE.BoxGeometry(2.4,0.11,0.65),new THREE.MeshLambertMaterial({color:0x9a9088}));
-    step.position.set(0,0.06,3.1+s*1.1); g.add(step);
-  }
+            // Komainu (lion-dog guardian) — two simple blocky shapes
+            [-1.8, 1.8].forEach(x => {
+                const base = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.5), new THREE.MeshLambertMaterial({ color: 0xd0c0aa }));
+                base.position.set(x, 0.28, 2.2); base.castShadow = true; g.add(base);
+                const head = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.36, 0.36), new THREE.MeshLambertMaterial({ color: 0xd0c0aa }));
+                head.position.set(x, 0.72, 2.2); g.add(head);
+            });
 
-  scene.add(g);
-  stations.push({ group:g, lantern, light, rope, proj });
-});
+            // Stone steps
+            for (let s = 1; s <= 3; s++) {
+                const step = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.11, 0.65), new THREE.MeshLambertMaterial({ color: 0x9a9088 }));
+                step.position.set(0, 0.06, 3.1 + s * 1.1); g.add(step);
+            }
 
-// ─── STONE LANTERNS along paths ───────────────────────────────────────────────
-function makeStoneLantern(x,z){
-  const g=new THREE.Group();
-  const sm=new THREE.MeshLambertMaterial({color:0x9a9088});
-  [
-    [new THREE.BoxGeometry(0.5,0.22,0.5),{y:0.11}],
-    [new THREE.CylinderGeometry(0.16,0.2,0.9,5),{y:0.65}],
-    [new THREE.BoxGeometry(0.48,0.22,0.48),{y:1.2}],
-    [new THREE.CylinderGeometry(0.28,0.28,0.38,4),{y:1.5}],
-    [new THREE.ConeGeometry(0.36,0.28,4),{y:1.83}],
-  ].forEach(([geo,pos])=>{
-    const m=new THREE.Mesh(geo,sm); Object.assign(m.position,pos); g.add(m);
-  });
-  const gm=new THREE.MeshBasicMaterial({color:0xffe090});
-  g.add((()=>{const _m=new THREE.Mesh(new THREE.BoxGeometry(0.16,0.16,0.16),gm);_m.position.set(0,1.42,0);return _m;})());
-  const l=new THREE.PointLight(0xffe090,0.7,7); l.position.y=1.42; g.add(l);
-  g.position.set(x,0,z); scene.add(g);
-}
-[[-5,-5],[5,-5],[-5,5],[5,5],[-12,-12],[12,-12],[-12,12],[12,12],[-18,0],[18,0],[0,-20]].forEach(([x,z])=>makeStoneLantern(x,z));
+            scene.add(g);
+            stations.push({ group: g, lantern, light, rope, proj });
+        });
 
-// ─── BACKGROUND MOUNTAINS ─────────────────────────────────────────────────────
-[[-90,-80,30,45,0x8baabb],[-70,-90,22,35,0x9ab8c8],[80,-75,28,42,0x7a9aab],
- [90,-60,18,30,0x8baabb],[-85,60,25,38,0x9ab8c8],[85,70,20,32,0x7a9aab],
- [-30,-95,35,55,0x6a8a9a],[30,-95,28,44,0x7a9aab],[0,-100,32,50,0x8baabb],
- [60,60,22,36,0x8baabb],[-60,80,18,28,0x9ab8c8]
-].forEach(([x,z,r,h,c])=>{
-  const m=new THREE.Mesh(new THREE.ConeGeometry(r,h,5+Math.floor(Math.random()*3)),new THREE.MeshLambertMaterial({color:c}));
-  m.position.set(x,h/2-1,z); scene.add(m);
-  // Snow cap
-  const cap=new THREE.Mesh(new THREE.ConeGeometry(r*0.24,h*0.18,5),new THREE.MeshLambertMaterial({color:0xf0ece8}));
-  cap.position.set(x,h-1-h*0.09,z); scene.add(cap);
-});
+        // ─── ABOUT ME MARKER (center) ────────────────────────────────────────────────
+        (function buildAboutMarker() {
+            const aboutProj = PROJECTS.find(p => p.isAboutMe);
+            if (!aboutProj) return;
+            const g = new THREE.Group();
+            // Post
+            g.add((() => { const _m = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 2.8, 6), new THREE.MeshLambertMaterial({ color: 0x8a7a5a })); _m.position.y = 1.4; return _m; })());
+            // Sign board
+            const sign = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.7, 0.1), new THREE.MeshLambertMaterial({ color: 0xfef0d8 }));
+            sign.position.set(0, 2.6, 0); g.add(sign);
+            // Border strip
+            const border = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.75, 0.08), new THREE.MeshLambertMaterial({ color: 0xf2c97a }));
+            border.position.set(0, 2.6, -0.02); g.add(border);
+            // Glow light
+            const light = new THREE.PointLight(0xf2c97a, 2.0, 14);
+            light.position.set(0, 3.2, 0); g.add(light);
+            g.position.set(0, 0, 0); scene.add(g);
+            stations.push({ group: g, lantern: { material: { emissiveIntensity: 0.4 } }, light, rope: { rotation: { y: 0 } }, proj: aboutProj });
+        })();
 
+        // ─── STONE LANTERNS along paths ───────────────────────────────────────────────
+        function makeStoneLantern(x, z) {
+            const g = new THREE.Group();
+            const sm = new THREE.MeshLambertMaterial({ color: 0x9a9088 });
+            [
+                [new THREE.BoxGeometry(0.5, 0.22, 0.5), { y: 0.11 }],
+                [new THREE.CylinderGeometry(0.16, 0.2, 0.9, 5), { y: 0.65 }],
+                [new THREE.BoxGeometry(0.48, 0.22, 0.48), { y: 1.2 }],
+                [new THREE.CylinderGeometry(0.28, 0.28, 0.38, 4), { y: 1.5 }],
+                [new THREE.ConeGeometry(0.36, 0.28, 4), { y: 1.83 }],
+            ].forEach(([geo, pos]) => {
+                const m = new THREE.Mesh(geo, sm); Object.assign(m.position, pos); g.add(m);
+            });
+            const gm = new THREE.MeshBasicMaterial({ color: 0xffe090 });
+            g.add((() => { const _m = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.16, 0.16), gm); _m.position.set(0, 1.42, 0); return _m; })());
+            const l = new THREE.PointLight(0xffe090, 0.7, 7); l.position.y = 1.42; g.add(l);
+            g.position.set(x, 0, z); scene.add(g);
+        }
+        [[-5, -5], [5, -5], [-5, 5], [5, 5], [-12, -12], [12, -12], [-12, 12], [12, 12], [-18, 0], [18, 0], [0, -20]].forEach(([x, z]) => makeStoneLantern(x, z));
 
+        // ─── STAR FIELD ──────────────────────────────────────────────────────────────
+        const starGeo = new THREE.BufferGeometry();
+        const starVerts = [];
+        for (let i = 0; i < 800; i++) {
+            const theta = Math.random() * Math.PI * 2, phi = Math.acos(2 * Math.random() - 1) * 0.45;
+            starVerts.push(Math.sin(phi) * Math.cos(theta) * 180, Math.cos(phi) * 180, Math.sin(phi) * Math.sin(theta) * 180);
+        }
+        starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
+        const starField = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xfff8f0, size: 0.55, transparent: true, opacity: 0 }));
+        scene.add(starField);
 
-// ─── KEI CAR ─────────────────────────────────────────────────────────────────
-const carGroup = new THREE.Group();
-scene.add(carGroup);
-
-const bodyMat  = new THREE.MeshLambertMaterial({ color: 0xfbf0dc });
-const paintMat = new THREE.MeshLambertMaterial({ color: 0xe8c0a0 });
-const glassMat = new THREE.MeshLambertMaterial({ color: 0xc8dce8, transparent:true, opacity:0.7 });
-
-// Lower body
-const lower=new THREE.Mesh(new THREE.BoxGeometry(1.7,0.5,3.4),paintMat);
-lower.position.y=0.5; lower.castShadow=true; carGroup.add(lower);
-// Upper cabin
-const upper=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.54,2.0),bodyMat);
-upper.position.set(0,0.9,-0.1); upper.castShadow=true; carGroup.add(upper);
-// Windscreen
-const ws=new THREE.Mesh(new THREE.BoxGeometry(1.42,0.44,0.06),glassMat);
-ws.position.set(0,0.88,0.87); carGroup.add(ws);
-// Rear window
-const rw=new THREE.Mesh(new THREE.BoxGeometry(1.42,0.38,0.06),glassMat);
-rw.position.set(0,0.9,-1.07); carGroup.add(rw);
-// Roof rack
-carGroup.add((()=>{const _m=new THREE.Mesh(new THREE.BoxGeometry(1.1,0.07,1.0),new THREE.MeshLambertMaterial({color:0x8a7a6a}));_m.position.set(0,1.22,-0.1);return _m;})());
-// Bumpers
-const bMat=new THREE.MeshLambertMaterial({color:0xc8b89a});
-carGroup.add((()=>{const _m=new THREE.Mesh(new THREE.BoxGeometry(1.7,0.2,0.16),bMat);_m.position.set(0,0.38,1.76);return _m;})());
-carGroup.add((()=>{const _m=new THREE.Mesh(new THREE.BoxGeometry(1.7,0.2,0.16),bMat);_m.position.set(0,0.38,-1.76);return _m;})());
-// Headlights
-const hlMat=new THREE.MeshBasicMaterial({color:0xfffce8});
-[-0.55,0.55].forEach(x=>{
-  carGroup.add((()=>{const _m=new THREE.Mesh(new THREE.BoxGeometry(0.28,0.17,0.07),hlMat);_m.position.set(undefined,0.54,1.73);return _m;})());
-  const sp=new THREE.SpotLight(0xfff8e0,4,22,Math.PI/11,0.5);
-  sp.position.set(x,0.54,1.73); sp.target.position.set(x*0.5,0,22);
-  carGroup.add(sp); carGroup.add(sp.target);
-});
-// Taillights
-const tlMat=new THREE.MeshBasicMaterial({color:0xd84040});
-[-0.55,0.55].forEach(x=>carGroup.add((()=>{const _m=new THREE.Mesh(new THREE.BoxGeometry(0.28,0.13,0.05),tlMat);_m.position.set(undefined,0.54,-1.72);return _m;})()));
-// Wheels
-const wheels=[];
-const wMat=new THREE.MeshLambertMaterial({color:0x2a2420});
-const hubMat=new THREE.MeshLambertMaterial({color:0xc0b0a0});
-[[-0.95,0.3,1.1],[0.95,0.3,1.1],[-0.95,0.3,-1.1],[0.95,0.3,-1.1]].forEach(([x,y,z])=>{
-  const w=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.22,10),wMat);
-  w.rotation.z=Math.PI/2; w.position.set(x,y,z); w.castShadow=true; carGroup.add(w); wheels.push(w);
-  const h=new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.24,6),hubMat);
-  h.rotation.z=Math.PI/2; h.position.set(x,y,z); carGroup.add(h);
-});
-// Antenna
-carGroup.add((()=>{const _m=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.55,4),new THREE.MeshLambertMaterial({color:0x555555}));_m.position.set(-0.4,1.5,-0.5);return _m;})());
-carGroup.position.set(0,0,8);
+        // ─── BACKGROUND MOUNTAINS ─────────────────────────────────────────────────────
+        [[-90, -80, 30, 45, 0x8baabb], [-70, -90, 22, 35, 0x9ab8c8], [80, -75, 28, 42, 0x7a9aab],
+        [90, -60, 18, 30, 0x8baabb], [-85, 60, 25, 38, 0x9ab8c8], [85, 70, 20, 32, 0x7a9aab],
+        [-30, -95, 35, 55, 0x6a8a9a], [30, -95, 28, 44, 0x7a9aab], [0, -100, 32, 50, 0x8baabb],
+        [60, 60, 22, 36, 0x8baabb], [-60, 80, 18, 28, 0x9ab8c8]
+        ].forEach(([x, z, r, h, c]) => {
+            const m = new THREE.Mesh(new THREE.ConeGeometry(r, h, 5 + Math.floor(Math.random() * 3)), new THREE.MeshLambertMaterial({ color: c }));
+            m.position.set(x, h / 2 - 1, z); scene.add(m);
+            // Snow cap
+            const cap = new THREE.Mesh(new THREE.ConeGeometry(r * 0.24, h * 0.18, 5), new THREE.MeshLambertMaterial({ color: 0xf0ece8 }));
+            cap.position.set(x, h - 1 - h * 0.09, z); scene.add(cap);
+        });
 
 
 
-// ─── TOUCH / JOYSTICK ────────────────────────────────────────────────────────
-const isTouchDevice=()=>('ontouchstart' in window)||navigator.maxTouchPoints>0;
-function initMobileUI(){
-  if(!isTouchDevice()) return;
-  document.getElementById('joystick-zone').style.display='block';
-  document.getElementById('enter-btn').style.display='flex';
-  document.getElementById('controls-hint').style.display='none';
-}
-const joystick={active:false,x:0,y:0,touchId:null};
-const STICK_LIMIT=40;
-const joystickZone=document.getElementById('joystick-zone');
-const joystickStick=document.getElementById('joystick-stick');
-function getJoyCenter(){const r=joystickZone.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2};}
-function updateJoystick(t){
-  const c=getJoyCenter(); let dx=t.clientX-c.x,dy=t.clientY-c.y;
-  const d=Math.sqrt(dx*dx+dy*dy); if(d>STICK_LIMIT){dx=(dx/d)*STICK_LIMIT;dy=(dy/d)*STICK_LIMIT;}
-  joystick.x=dx/STICK_LIMIT; joystick.y=dy/STICK_LIMIT;
-  joystickStick.style.transform=`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;
-}
-joystickZone.addEventListener('touchstart',e=>{e.preventDefault();const t=e.changedTouches[0];joystick.active=true;joystick.touchId=t.identifier;updateJoystick(t);},{passive:false});
-joystickZone.addEventListener('touchmove',e=>{e.preventDefault();for(const t of e.changedTouches)if(t.identifier===joystick.touchId)updateJoystick(t);},{passive:false});
-joystickZone.addEventListener('touchend',e=>{for(const t of e.changedTouches)if(t.identifier===joystick.touchId){joystick.active=false;joystick.x=0;joystick.y=0;joystick.touchId=null;joystickStick.style.transform='translate(-50%,-50%)';}});
+        // ─── KEI CAR ─────────────────────────────────────────────────────────────────
+        const carGroup = new THREE.Group();
+        scene.add(carGroup);
 
-// ─── CAR PHYSICS ─────────────────────────────────────────────────────────────
-const keys={};
-let carSpeed=0,carAngle=0;
-const MAX_SPEED=0.32,ACCEL=0.011,FRICTION=0.93,TURN=0.038;
-document.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;});
-document.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});
+        const bodyMat = new THREE.MeshLambertMaterial({ color: 0xfbf0dc });
+        const paintMat = new THREE.MeshLambertMaterial({ color: 0xe8c0a0 });
+        const glassMat = new THREE.MeshLambertMaterial({ color: 0xc8dce8, transparent: true, opacity: 0.7 });
 
-function updateCar(){
-  const fwd=keys['w']||keys['arrowup']   ||joystick.y<-0.2;
-  const bwd=keys['s']||keys['arrowdown'] ||joystick.y> 0.2;
-  const lft=keys['a']||keys['arrowleft'] ||joystick.x<-0.2;
-  const rgt=keys['d']||keys['arrowright']||joystick.x> 0.2;
-  const jm=joystick.active?Math.abs(joystick.x):1;
-  if(fwd) carSpeed=Math.min(carSpeed+ACCEL,MAX_SPEED);
-  if(bwd) carSpeed=Math.max(carSpeed-ACCEL,-MAX_SPEED*0.5);
-  carSpeed*=FRICTION;
-  if(Math.abs(carSpeed)>0.005){
-    const dir=carSpeed>0?1:-1, amt=TURN*(joystick.active?jm*1.2:1);
-    if(lft) carAngle+=amt*dir;
-    if(rgt) carAngle-=amt*dir;
-  }
-  carGroup.position.x+=Math.sin(carAngle)*carSpeed;
-  carGroup.position.z+=Math.cos(carAngle)*carSpeed;
-  carGroup.rotation.y=carAngle;
-  carGroup.position.x=Math.max(-88,Math.min(88,carGroup.position.x));
-  carGroup.position.z=Math.max(-88,Math.min(88,carGroup.position.z));
-  wheels.forEach(w=>{w.rotation.x+=carSpeed*3;});
-  document.getElementById('speed-val').textContent=String(Math.abs(Math.round(carSpeed*280))).padStart(3,'0');
-}
+        // Lower body
+        const lower = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.5, 3.4), paintMat);
+        lower.position.y = 0.5; lower.castShadow = true; carGroup.add(lower);
+        // Upper cabin
+        const upper = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.54, 2.0), bodyMat);
+        upper.position.set(0, 0.9, -0.1); upper.castShadow = true; carGroup.add(upper);
+        // Windscreen
+        const ws = new THREE.Mesh(new THREE.BoxGeometry(1.42, 0.44, 0.06), glassMat);
+        ws.position.set(0, 0.88, 0.87); carGroup.add(ws);
+        // Rear window
+        const rw = new THREE.Mesh(new THREE.BoxGeometry(1.42, 0.38, 0.06), glassMat);
+        rw.position.set(0, 0.9, -1.07); carGroup.add(rw);
+        // Roof rack
+        carGroup.add((() => { const _m = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.07, 1.0), new THREE.MeshLambertMaterial({ color: 0x8a7a6a })); _m.position.set(0, 1.22, -0.1); return _m; })());
+        // Bumpers
+        const bMat = new THREE.MeshLambertMaterial({ color: 0xc8b89a });
+        carGroup.add((() => { const _m = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.2, 0.16), bMat); _m.position.set(0, 0.38, 1.76); return _m; })());
+        carGroup.add((() => { const _m = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.2, 0.16), bMat); _m.position.set(0, 0.38, -1.76); return _m; })());
+        // Headlights
+        const hlMat = new THREE.MeshBasicMaterial({ color: 0xfffce8 });
+        [-0.55, 0.55].forEach(x => {
+            carGroup.add((() => { const _m = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.17, 0.07), hlMat); _m.position.set(undefined, 0.54, 1.73); return _m; })());
+            const sp = new THREE.SpotLight(0xfff8e0, 4, 22, Math.PI / 11, 0.5);
+            sp.position.set(x, 0.54, 1.73); sp.target.position.set(x * 0.5, 0, 22);
+            carGroup.add(sp); carGroup.add(sp.target);
+        });
+        // Taillights
+        const tlMat = new THREE.MeshBasicMaterial({ color: 0xd84040 });
+        [-0.55, 0.55].forEach(x => carGroup.add((() => { const _m = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.13, 0.05), tlMat); _m.position.set(undefined, 0.54, -1.72); return _m; })()));
+        // Wheels
+        const wheels = [];
+        const wMat = new THREE.MeshLambertMaterial({ color: 0x2a2420 });
+        const hubMat = new THREE.MeshLambertMaterial({ color: 0xc0b0a0 });
+        [[-0.95, 0.3, 1.1], [0.95, 0.3, 1.1], [-0.95, 0.3, -1.1], [0.95, 0.3, -1.1]].forEach(([x, y, z]) => {
+            const w = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.22, 10), wMat);
+            w.rotation.z = Math.PI / 2; w.position.set(x, y, z); w.castShadow = true; carGroup.add(w); wheels.push(w);
+            const h = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.24, 6), hubMat);
+            h.rotation.z = Math.PI / 2; h.position.set(x, y, z); carGroup.add(h);
+        });
+        // Antenna
+        carGroup.add((() => { const _m = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.55, 4), new THREE.MeshLambertMaterial({ color: 0x555555 })); _m.position.set(-0.4, 1.5, -0.5); return _m; })());
+        carGroup.position.set(0, 0, 8);
 
-// ─── CAMERA ──────────────────────────────────────────────────────────────────
-const camOff=new THREE.Vector3(0,6,-13),camLk=new THREE.Vector3(0,1,5);
-let smoothCam=new THREE.Vector3(0,6,21);
-function updateCamera(){
-  const rot=new THREE.Euler(0,carAngle,0);
-  smoothCam.lerp(carGroup.position.clone().add(camOff.clone().applyEuler(rot)),0.09);
-  camera.position.copy(smoothCam);
-  camera.lookAt(carGroup.position.clone().add(camLk.clone().applyEuler(rot)));
-}
 
-// ─── PROXIMITY + PANEL ───────────────────────────────────────────────────────
-let nearStation=null,panelOpen=false;
-function checkProximity(){
-  let closest=null,minD=9;
-  stations.forEach(s=>{
-    const dx=carGroup.position.x-s.group.position.x,dz=carGroup.position.z-s.group.position.z;
-    const d=Math.sqrt(dx*dx+dz*dz); if(d<minD){minD=d;closest=s;}
-  });
-  const pr=document.getElementById('prompt'),pn=document.getElementById('prompt-name'),eb=document.getElementById('enter-btn');
-  if(closest&&!panelOpen){nearStation=closest;pr.classList.add('visible');pn.textContent=closest.proj.name;eb.classList.add('visible');}
-  else{nearStation=null;pr.classList.remove('visible');eb.classList.remove('visible');}
-}
-document.addEventListener('keydown',e=>{
-  if(e.key.toLowerCase()==='e'&&nearStation&&!panelOpen) openPanel(nearStation.proj);
-  if(e.key==='Escape') closePanel();
-});
-function mobileEnter(){if(nearStation&&!panelOpen)openPanel(nearStation.proj);}
-window.mobileEnter=mobileEnter;
-function openPanel(proj){
-  panelOpen=true;
-  document.getElementById('panel-tag').textContent=proj.tag;
-  document.getElementById('panel-title').textContent=proj.title;
-  document.getElementById('panel-subtitle').textContent=proj.subtitle;
-  document.getElementById('panel-desc').textContent=proj.desc;
-  document.getElementById('panel-tech').innerHTML=proj.tech.map(t=>`<span class="tech-tag">${t}</span>`).join('');
-  document.getElementById('panel-link1').href=proj.link1;
-  document.getElementById('panel-link1').textContent=proj.link1Label||'作品を見る · View';
-  document.getElementById('panel-link2').href=proj.link2;
-  document.getElementById('panel-link2').textContent=proj.link2Label||'GitHub';
-  document.getElementById('panel').classList.add('open');
-  document.getElementById('prompt').classList.remove('visible');
-}
-function closePanel(){panelOpen=false;document.getElementById('panel').classList.remove('open');}
-window.closePanel=closePanel;
 
-// ─── MINIMAP ─────────────────────────────────────────────────────────────────
-const mmC=document.getElementById('minimap-canvas'),mmCtx=mmC.getContext('2d');
-const MM=120,MW=100;
-function toMM(x,z){return{x:(x/MW+0.5)*MM,y:(z/MW+0.5)*MM};}
-function drawMinimap(){
-  mmCtx.fillStyle='rgba(205,190,165,0.9)'; mmCtx.fillRect(0,0,MM,MM);
-  const grd=mmCtx.createRadialGradient(MM/2,MM/2,8,MM/2,MM/2,MM/2);
-  grd.addColorStop(0,'rgba(170,205,150,0.45)'); grd.addColorStop(1,'rgba(150,175,130,0.6)');
-  mmCtx.fillStyle=grd; mmCtx.fillRect(0,0,MM,MM);
-  // Paths
-  mmCtx.strokeStyle='rgba(175,150,105,0.7)'; mmCtx.lineWidth=2;
-  [[0,8,-26,-26],[0,8,26,-26],[0,8,-26,26],[0,8,26,26],[0,8,0,-44]].forEach(([x1,z1,x2,z2])=>{
-    const a=toMM(x1,z1),b=toMM(x2,z2);
-    mmCtx.beginPath();mmCtx.moveTo(a.x,a.y);mmCtx.lineTo(b.x,b.y);mmCtx.stroke();
-  });
-  // Stations
-  stations.forEach(s=>{
-    const p=toMM(s.group.position.x,s.group.position.z);
-    const c='#'+s.proj.color.toString(16).padStart(6,'0');
-    mmCtx.fillStyle=c; mmCtx.fillRect(p.x-3,p.y-5,6,5);
-    mmCtx.strokeStyle=c; mmCtx.lineWidth=1.5;
-    mmCtx.beginPath();mmCtx.moveTo(p.x-5,p.y-5);mmCtx.lineTo(p.x+5,p.y-5);mmCtx.stroke();
-  });
-  // Car
-  const cp=toMM(carGroup.position.x,carGroup.position.z);
-  mmCtx.save();mmCtx.translate(cp.x,cp.y);mmCtx.rotate(-carAngle);
-  mmCtx.fillStyle='#c94a1a';mmCtx.beginPath();mmCtx.moveTo(0,-5);mmCtx.lineTo(-3,3);mmCtx.lineTo(3,3);mmCtx.closePath();mmCtx.fill();
-  mmCtx.restore();
-}
+        // ─── TOUCH / JOYSTICK ────────────────────────────────────────────────────────
+        const isTouchDevice = () => ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+        function initMobileUI() {
+            if (!isTouchDevice()) return;
+            document.getElementById('joystick-zone').style.display = 'block';
+            document.getElementById('enter-btn').style.display = 'flex';
+            document.getElementById('controls-hint').style.display = 'none';
+        }
+        const joystick = { active: false, x: 0, y: 0, touchId: null };
+        const STICK_LIMIT = 40;
+        const joystickZone = document.getElementById('joystick-zone');
+        const joystickStick = document.getElementById('joystick-stick');
+        function getJoyCenter() { const r = joystickZone.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }
+        function updateJoystick(t) {
+            const c = getJoyCenter(); let dx = t.clientX - c.x, dy = t.clientY - c.y;
+            const d = Math.sqrt(dx * dx + dy * dy); if (d > STICK_LIMIT) { dx = (dx / d) * STICK_LIMIT; dy = (dy / d) * STICK_LIMIT; }
+            joystick.x = dx / STICK_LIMIT; joystick.y = dy / STICK_LIMIT;
+            joystickStick.style.transform = `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;
+        }
+        joystickZone.addEventListener('touchstart', e => { e.preventDefault(); const t = e.changedTouches[0]; joystick.active = true; joystick.touchId = t.identifier; updateJoystick(t); }, { passive: false });
+        joystickZone.addEventListener('touchmove', e => { e.preventDefault(); for (const t of e.changedTouches) if (t.identifier === joystick.touchId) updateJoystick(t); }, { passive: false });
+        joystickZone.addEventListener('touchend', e => { for (const t of e.changedTouches) if (t.identifier === joystick.touchId) { joystick.active = false; joystick.x = 0; joystick.y = 0; joystick.touchId = null; joystickStick.style.transform = 'translate(-50%,-50%)'; } });
 
-// ─── ANIMATE ─────────────────────────────────────────────────────────────────
-let t=0;
-function animate(){
-  requestAnimationFrame(animate); t+=0.016;
-  updateCar(); updateCamera(); checkProximity();
-  stations.forEach((s,i)=>{
-    const fo=i*1.3;
-    s.light.intensity=2.2+Math.sin(t*1.8+fo)*0.5;
-    s.lantern.material.emissiveIntensity=0.4+Math.sin(t*2+fo)*0.18;
-    s.rope.rotation.y+=0.003;
-  });
-  sun.position.x=40+Math.sin(t*0.018)*6;
-  drawMinimap();
-  renderer.render(scene,camera);
-}
+        // ─── CAR PHYSICS ─────────────────────────────────────────────────────────────
+        const keys = {};
+        let carSpeed = 0, carAngle = 0;
+        const MAX_SPEED = 0.65, ACCEL = 0.022, FRICTION = 0.91, TURN = 0.042;
+        document.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
+        document.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
 
-window.addEventListener('resize',()=>{
-  camera.aspect=window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth,window.innerHeight);
-});
+        function updateCar() {
+            const fwd = keys['w'] || keys['arrowup'] || joystick.y < -0.2;
+            const bwd = keys['s'] || keys['arrowdown'] || joystick.y > 0.2;
+            const lft = keys['a'] || keys['arrowleft'] || joystick.x < -0.2;
+            const rgt = keys['d'] || keys['arrowright'] || joystick.x > 0.2;
+            const jm = joystick.active ? Math.abs(joystick.x) : 1;
+            if (fwd) carSpeed = Math.min(carSpeed + ACCEL, MAX_SPEED);
+            if (bwd) carSpeed = Math.max(carSpeed - ACCEL, -MAX_SPEED * 0.5);
+            carSpeed *= FRICTION;
+            if (Math.abs(carSpeed) > 0.005) {
+                const dir = carSpeed > 0 ? 1 : -1, amt = TURN * (joystick.active ? jm * 1.2 : 1);
+                if (lft) carAngle += amt * dir;
+                if (rgt) carAngle -= amt * dir;
+            }
+            carGroup.position.x += Math.sin(carAngle) * carSpeed;
+            carGroup.position.z += Math.cos(carAngle) * carSpeed;
+            carGroup.rotation.y = carAngle;
+            carGroup.position.x = Math.max(-88, Math.min(88, carGroup.position.x));
+            carGroup.position.z = Math.max(-88, Math.min(88, carGroup.position.z));
+            wheels.forEach(w => { w.rotation.x += carSpeed * 3; });
+            document.getElementById('speed-val').textContent = String(Math.abs(Math.round(carSpeed * 280))).padStart(3, '0');
+        }
 
-// ─── LOADING ─────────────────────────────────────────────────────────────────
-const steps=[
-  [15,'里山を描いています... drawing countryside'],
-  [35,'桜を植えています... planting sakura'],
-  [55,'鳥居を建てています... building torii gates'],
-  [75,'軽自動車を準備中... preparing kei car'],
-  [100,'出発しましょう！ let\'s go!'],
-];
-let si=0;
-function loadStep(){
-  if(si>=steps.length){
-    setTimeout(()=>{
-      const el=document.getElementById('loading'); el.style.opacity='0';
-      setTimeout(()=>{el.style.display='none';initMobileUI();animate();},900);
-    },400); return;
-  }
-  const[pct,msg]=steps[si++];
-  document.getElementById('loading-bar').style.width=pct+'%';
-  document.getElementById('loading-status').textContent=msg;
-  setTimeout(loadStep,380);
-}
-loadStep();
-</script>
+        // ─── CAMERA ──────────────────────────────────────────────────────────────────
+        const camOff = new THREE.Vector3(0, 6, -13), camLk = new THREE.Vector3(0, 1, 5);
+        let smoothCam = new THREE.Vector3(0, 6, 21);
+        function updateCamera() {
+            const rot = new THREE.Euler(0, carAngle, 0);
+            smoothCam.lerp(carGroup.position.clone().add(camOff.clone().applyEuler(rot)), 0.09);
+            camera.position.copy(smoothCam);
+            camera.lookAt(carGroup.position.clone().add(camLk.clone().applyEuler(rot)));
+        }
+
+        // ─── PROXIMITY + PANEL ───────────────────────────────────────────────────────
+        let nearStation = null, panelOpen = false;
+        function checkProximity() {
+            let closest = null, minD = 9;
+            stations.forEach(s => {
+                const dx = carGroup.position.x - s.group.position.x, dz = carGroup.position.z - s.group.position.z;
+                const d = Math.sqrt(dx * dx + dz * dz); if (d < minD) { minD = d; closest = s; }
+            });
+            const pr = document.getElementById('prompt'), pn = document.getElementById('prompt-name'), eb = document.getElementById('enter-btn');
+            if (closest && !panelOpen) { nearStation = closest; pr.classList.add('visible'); pn.textContent = closest.proj.name; eb.classList.add('visible'); }
+            else { nearStation = null; pr.classList.remove('visible'); eb.classList.remove('visible'); }
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key.toLowerCase() === 'e' && nearStation && !panelOpen) openPanel(nearStation.proj);
+            if (e.key === 'Escape') closePanel();
+        });
+        function mobileEnter() { if (nearStation && !panelOpen) openPanel(nearStation.proj); }
+        window.mobileEnter = mobileEnter;
+        function openPanel(proj) {
+            panelOpen = true;
+            document.getElementById('panel-tag').textContent = proj.tag;
+            document.getElementById('panel-title').textContent = proj.title;
+            document.getElementById('panel-subtitle').textContent = proj.subtitle;
+            document.getElementById('panel-desc').textContent = proj.desc;
+            document.getElementById('panel-tech').innerHTML = proj.tech.map(t => `<span class="tech-tag">${t}</span>`).join('');
+            document.getElementById('panel-link1').href = proj.link1;
+            document.getElementById('panel-link1').textContent = proj.link1Label || '作品を見る · View';
+            document.getElementById('panel-link2').href = proj.link2;
+            document.getElementById('panel-link2').textContent = proj.link2Label || 'GitHub';
+            // Panel image
+            const imgWrap = document.getElementById('panel-img-wrap');
+            const imgEl = document.getElementById('panel-img');
+            if (proj.img) { imgWrap.style.display = 'block'; imgEl.style.opacity = '0'; imgEl.src = proj.img; }
+            else { imgWrap.style.display = 'none'; imgEl.src = ''; }
+            document.getElementById('panel').classList.add('open');
+            document.getElementById('prompt').classList.remove('visible');
+        }
+        function closePanel() { panelOpen = false; document.getElementById('panel').classList.remove('open'); }
+        window.closePanel = closePanel;
+
+        // ─── MINIMAP ─────────────────────────────────────────────────────────────────
+        const mmC = document.getElementById('minimap-canvas'), mmCtx = mmC.getContext('2d');
+        const MM = 120, MW = 100;
+        function toMM(x, z) { return { x: (x / MW + 0.5) * MM, y: (z / MW + 0.5) * MM }; }
+        function drawMinimap() {
+            mmCtx.fillStyle = 'rgba(205,190,165,0.9)'; mmCtx.fillRect(0, 0, MM, MM);
+            const grd = mmCtx.createRadialGradient(MM / 2, MM / 2, 8, MM / 2, MM / 2, MM / 2);
+            grd.addColorStop(0, 'rgba(170,205,150,0.45)'); grd.addColorStop(1, 'rgba(150,175,130,0.6)');
+            mmCtx.fillStyle = grd; mmCtx.fillRect(0, 0, MM, MM);
+            // Paths
+            mmCtx.strokeStyle = 'rgba(175,150,105,0.7)'; mmCtx.lineWidth = 2;
+            [[0, 8, -26, -26], [0, 8, 26, -26], [0, 8, -26, 26], [0, 8, 26, 26], [0, 8, 0, -44]].forEach(([x1, z1, x2, z2]) => {
+                const a = toMM(x1, z1), b = toMM(x2, z2);
+                mmCtx.beginPath(); mmCtx.moveTo(a.x, a.y); mmCtx.lineTo(b.x, b.y); mmCtx.stroke();
+            });
+            // Stations
+            stations.forEach(s => {
+                const p = toMM(s.group.position.x, s.group.position.z);
+                const c = '#' + s.proj.color.toString(16).padStart(6, '0');
+                mmCtx.fillStyle = c; mmCtx.fillRect(p.x - 3, p.y - 5, 6, 5);
+                mmCtx.strokeStyle = c; mmCtx.lineWidth = 1.5;
+                mmCtx.beginPath(); mmCtx.moveTo(p.x - 5, p.y - 5); mmCtx.lineTo(p.x + 5, p.y - 5); mmCtx.stroke();
+            });
+            // Car
+            const cp = toMM(carGroup.position.x, carGroup.position.z);
+            mmCtx.save(); mmCtx.translate(cp.x, cp.y); mmCtx.rotate(-carAngle);
+            mmCtx.fillStyle = '#c94a1a'; mmCtx.beginPath(); mmCtx.moveTo(0, -5); mmCtx.lineTo(-3, 3); mmCtx.lineTo(3, 3); mmCtx.closePath(); mmCtx.fill();
+            mmCtx.restore();
+        }
+
+        // ─── AUTO TOUR ───────────────────────────────────────────────────────────────
+        let tourActive = false, tourIdx = 0, tourPhase = 'drive', tourWait = 0;
+        // Tour order: About Me first, then all projects
+        const getTourOrder = () => [...stations].sort((a, b) => (a.proj.isAboutMe ? -1 : 0) - (b.proj.isAboutMe ? -1 : 0));
+        function toggleTour() {
+            tourActive = !tourActive;
+            const btn = document.getElementById('tour-btn');
+            if (tourActive) {
+                tourIdx = 0; tourPhase = 'drive'; tourWait = 0;
+                btn.style.background = 'rgba(201,74,26,0.3)';
+                btn.style.borderColor = '#e87c3e';
+                btn.textContent = '⛩ TOURING... · ツアー中';
+                closePanel();
+            } else {
+                btn.style.background = 'rgba(20,32,40,0.82)';
+                btn.textContent = '⛩ AUTO TOUR · 自動ツアー';
+                closePanel();
+            }
+        }
+        window.toggleTour = toggleTour;
+        document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 't') toggleTour(); });
+        function updateTour() {
+            if (!tourActive) return;
+            const order = getTourOrder();
+            if (tourIdx >= order.length) { tourActive = false; toggleTour(); return; }
+            const target = order[tourIdx].group.position;
+            if (tourPhase === 'drive') {
+                // Steer toward target
+                const dx = target.x - carGroup.position.x, dz = target.z - carGroup.position.z;
+                const dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist < 4.5) {
+                    carSpeed *= 0.7;
+                    tourPhase = 'wait'; tourWait = 180; // ~3s at 60fps
+                    openPanel(order[tourIdx].proj);
+                    return;
+                }
+                const targetAngle = Math.atan2(dx, dz);
+                let da = targetAngle - carAngle;
+                while (da > Math.PI) da -= Math.PI * 2;
+                while (da < -Math.PI) da += Math.PI * 2;
+                carAngle += da * 0.06;
+                carSpeed = Math.min(carSpeed + 0.018, MAX_SPEED * 0.72);
+                carGroup.position.x += Math.sin(carAngle) * carSpeed;
+                carGroup.position.z += Math.cos(carAngle) * carSpeed;
+                carGroup.rotation.y = carAngle;
+                wheels.forEach(w => { w.rotation.x += carSpeed * 3; });
+                document.getElementById('speed-val').textContent = String(Math.abs(Math.round(carSpeed * 280))).padStart(3, '0');
+            } else if (tourPhase === 'wait') {
+                carSpeed = 0;
+                tourWait--;
+                if (tourWait <= 0) { closePanel(); tourIdx++; tourPhase = 'drive'; }
+            }
+        }
+
+        // ─── ANIMATE ─────────────────────────────────────────────────────────────────
+        let t = 0;
+        function animate() {
+            requestAnimationFrame(animate); t += 0.016;
+            if (tourActive) updateTour(); else updateCar(); updateCamera(); checkProximity(); updateDayNight();
+            stations.forEach((s, i) => {
+                const fo = i * 1.3;
+                s.light.intensity = 2.2 + Math.sin(t * 1.8 + fo) * 0.5;
+                s.lantern.material.emissiveIntensity = 0.4 + Math.sin(t * 2 + fo) * 0.18;
+                s.rope.rotation.y += 0.003;
+            });
+            sun.position.x = 40 + Math.sin(t * 0.018) * 6;
+            drawMinimap();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ─── LOADING ─────────────────────────────────────────────────────────────────
+        const steps = [
+            [15, '里山を描いています... drawing countryside'],
+            [35, '桜を植えています... planting sakura'],
+            [55, '鳥居を建てています... building torii gates'],
+            [75, '軽自動車を準備中... preparing kei car'],
+            [100, '出発しましょう！ let\'s go!'],
+        ];
+        let si = 0;
+        function loadStep() {
+            if (si >= steps.length) {
+                setTimeout(() => {
+                    const el = document.getElementById('loading'); el.style.opacity = '0';
+                    setTimeout(() => { el.style.display = 'none'; initMobileUI(); animate(); }, 900);
+                }, 400); return;
+            }
+            const [pct, msg] = steps[si++];
+            document.getElementById('loading-bar').style.width = pct + '%';
+            document.getElementById('loading-status').textContent = msg;
+            setTimeout(loadStep, 380);
+        }
+        loadStep();</script>
 </body>
 </html>
