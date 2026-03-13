@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>たびポートフォリオ — Portfolio Journey</title>
+    <title>Portfolio Journey</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&family=Noto+Serif+JP:wght@300;400;600&display=swap');
 
@@ -721,13 +721,13 @@
 
     <div id="loading">
         <div id="loading-kanji">旅</div>
-        <div id="loading-title">TABI PORTFOLIO</div>
+        <div id="loading-title">PORTFOLIO</div>
         <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
-        <div id="loading-status">里山を描いています...</div>
+        <div id="loading-status">loading status...</div>
     </div>
 
     <div id="ski-hud">
-        <div id="ski-score-label">スコア · SCORE</div>
+        <div id="ski-score-label">SCORE</div>
         <div id="ski-score">0</div>
         <div id="ski-lives">⛷️⛷️⛷️</div>
     </div>
@@ -737,8 +737,8 @@
         <div id="ski-end-score">SCORE: 0</div>
         <div id="ski-end-best">BEST: 0</div>
         <div id="ski-end-btns">
-            <button class="ski-btn" id="ski-retry-btn" onclick="skiRetry()">↺ もう一度 · RETRY</button>
-            <button class="ski-btn" id="ski-exit-btn" onclick="skiExit()">← 戻る · EXIT</button>
+            <button class="ski-btn" id="ski-retry-btn" onclick="skiRetry()">↺ RETRY</button>
+            <button class="ski-btn" id="ski-exit-btn" onclick="skiExit()">← EXIT</button>
         </div>
     </div>
 
@@ -750,15 +750,15 @@
     <canvas id="canvas"></canvas>
 
     <div id="title">
-        <div id="title-main">旅ポートフォリオ</div>
-        <div id="title-sub">TABI PORTFOLIO · JOURNEY</div>
+        <div id="title-main">旅</div>
+        <div id="title-sub">PORTFOLIO · JOURNEY</div>
     </div>
 
     <div id="controls-hint">
-        <b>W A S D</b> — 走る · drive<br>
-        <b>E</b> — 探索する · explore<br>
-        <b>ESC</b> — 戻る · close<br>
-        <b>T</b> — ツアー · tour
+        <b>W A S D</b> — drive<br>
+        <b>E</b> —  explore<br>
+        <b>ESC</b> —  close<br>
+        <b>T</b> —  tour
     </div>
     <button id="tour-btn" onclick="toggleTour()" style="position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(20,32,40,0.82);border:1.5px solid rgba(201,74,26,0.5);color:#e87c3e;font-family:'Zen Kurenaido',sans-serif;font-size:11px;letter-spacing:2px;padding:7px 20px;cursor:pointer;border-radius:2px;transition:all 0.3s;">⛩ AUTO TOUR · 自動ツアー</button>
 
@@ -769,7 +769,7 @@
 
     <div id="minimap">
         <canvas id="minimap-canvas" width="120" height="120"></canvas>
-        <div id="minimap-label">MAP · 地図</div>
+        <div id="minimap-label">MAP</div>
     </div>
 
     <div id="joystick-zone">
@@ -783,12 +783,12 @@
     </div>
 
     <div id="prompt">
-        <div id="prompt-key">[ E ] 探索する</div>
+        <div id="prompt-key">[ E ] explore</div>
         <div id="prompt-name"></div>
     </div>
 
     <div id="panel">
-        <button id="panel-close" onclick="closePanel()">✕ 閉じる</button>
+        <button id="panel-close" onclick="closePanel()">✕ close</button>
         <div class="panel-kanji" id="panel-tag">作品</div>
         <div class="panel-title" id="panel-title">Project Title</div>
         <div class="panel-subtitle" id="panel-subtitle">SUBTITLE</div>
