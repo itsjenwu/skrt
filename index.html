@@ -1356,6 +1356,13 @@
                 mmCtx.strokeStyle = c; mmCtx.lineWidth = 1.5;
                 mmCtx.beginPath(); mmCtx.moveTo(p.x - 5, p.y - 5); mmCtx.lineTo(p.x + 5, p.y - 5); mmCtx.stroke();
             });
+            // Ski gate marker
+            const sgp = toMM(SKI_GATE_X, SKI_GATE_Z);
+            mmCtx.fillStyle = '#44aaff';
+            mmCtx.font = 'bold 9px sans-serif';
+            mmCtx.fillText('⛷', sgp.x - 5, sgp.y + 4);
+            mmCtx.strokeStyle = '#44aaff'; mmCtx.lineWidth = 1;
+            mmCtx.strokeRect(sgp.x - 7, sgp.y - 8, 14, 12);
             // Car
             const cp = toMM(carGroup.position.x, carGroup.position.z);
             mmCtx.save(); mmCtx.translate(cp.x, cp.y); mmCtx.rotate(-carAngle);
@@ -1419,10 +1426,12 @@
         }
 
         // ─── SKI GATE (world object) ──────────────────────────────────────────────────
-        const SKI_GATE_X = 52, SKI_GATE_Z = -52; // near the top-right mountain corner
+        // Terrain height formula: rim=(d-52)/60, h=rim*(7+sin*3+cos*2.5)+extra
+        // At x=52,z=-52: d≈73.5, rim≈0.36, h≈3.3 — so we lift the gate by that amount
+        const SKI_GATE_X = 52, SKI_GATE_Z = -52;
+        const SKI_GATE_Y = 4.5; // raised to sit on the hillside terrain
         (function buildSkiGate() {
             const g = new THREE.Group();
-            // Two tall red-white poles
             const poleMat = new THREE.MeshLambertMaterial({ color: 0xdd2222 });
             const whiteMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
             [-2.2, 2.2].forEach(x => {
@@ -1434,28 +1443,23 @@
                     m.position.set(x, 0.35 + seg * 0.7, 0);
                     g.add(m);
                 }
-                // Flag at top
                 const flag = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.4, 0.06), poleMat);
                 flag.position.set(x + (x > 0 ? 0.35 : -0.35), 3.8, 0);
                 g.add(flag);
             });
-            // Banner across the top
             const banner = new THREE.Mesh(
                 new THREE.BoxGeometry(4.6, 0.28, 0.08),
                 new THREE.MeshLambertMaterial({ color: 0x1155cc })
             );
             banner.position.set(0, 3.5, 0); g.add(banner);
-            // Glow light
             const gl = new THREE.PointLight(0x44aaff, 2.5, 14);
             gl.position.set(0, 3.5, 0); g.add(gl);
-            // Sparkling snow particles around the gate
             const snowGeo = new THREE.BufferGeometry();
             const sv = [];
             for (let i = 0; i < 60; i++) sv.push((Math.random() - 0.5) * 6, (Math.random()) * 4, (Math.random() - 0.5) * 3);
             snowGeo.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3));
             g.add(new THREE.Points(snowGeo, new THREE.PointsMaterial({ color: 0xeef8ff, size: 0.12, transparent: true, opacity: 0.7 })));
-
-            g.position.set(SKI_GATE_X, 0, SKI_GATE_Z);
+            g.position.set(SKI_GATE_X, SKI_GATE_Y, SKI_GATE_Z);
             scene.add(g);
         })();
 
@@ -1520,8 +1524,10 @@
             for (let i = 0; i < 20; i++) {
                 [-12, 12].forEach(sx => {
                     const tg = new THREE.Group();
-                    tg.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.15, 1.2, 5), trunkMat), { position: new THREE.Vector3(0, 0.6, 0) }));
-                    tg.add(Object.assign(new THREE.Mesh(new THREE.ConeGeometry(1.0, 2.0, 6), treeMat), { position: new THREE.Vector3(0, 2.2, 0) }));
+                    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.15, 1.2, 5), trunkMat);
+                    trunk.position.set(0, 0.6, 0); tg.add(trunk);
+                    const crown = new THREE.Mesh(new THREE.ConeGeometry(1.0, 2.0, 6), treeMat);
+                    crown.position.set(0, 2.2, 0); tg.add(crown);
                     tg.position.set(sx + (Math.random() - 0.5) * 3, 0, -i * 14 - Math.random() * 6);
                     SKI.skiScene.add(tg);
                 });
@@ -1535,8 +1541,10 @@
 
             // Player car mesh (simplified kei car shape for ski mode)
             const pg = new THREE.Group();
-            pg.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 2.0), new THREE.MeshLambertMaterial({ color: 0xe8c0a0 })), { position: new THREE.Vector3(0, 0.2, 0) }));
-            pg.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.35, 1.0), new THREE.MeshLambertMaterial({ color: 0xfbf0dc })), { position: new THREE.Vector3(0, 0.56, -0.1) }));
+            const carBody = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 2.0), new THREE.MeshLambertMaterial({ color: 0xe8c0a0 }));
+            carBody.position.set(0, 0.2, 0); pg.add(carBody);
+            const carCabin = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.35, 1.0), new THREE.MeshLambertMaterial({ color: 0xfbf0dc }));
+            carCabin.position.set(0, 0.56, -0.1); pg.add(carCabin);
             // Skis
             [-0.5, 0.5].forEach(sx => {
                 const ski = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.06, 2.4), new THREE.MeshLambertMaterial({ color: 0x1155cc }));
